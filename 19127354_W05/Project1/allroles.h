@@ -18,6 +18,17 @@ struct User {
 	DateOfBirth DoB = { "", "", "" };
 	int pos;
 };
+
+struct Student {
+	string id;
+	string password;
+	string name;
+	DateOfBirth Dob = { "", "", "" };
+	string classID;
+	bool status;
+
+};
+
 void MainMenu();
 void Login();
 bool CheckLogin(string rolepath, User* user);
