@@ -26,7 +26,7 @@ void ChangePassword(User& user) {
 		ClearPrintDelay("Your old password is wrong or confirm new password failed!");
 		cout << "0. Back" << endl;
 		cout << "1. Try again" << endl;
-		cout << "Your choose: ";
+		cout << "Your choice: ";
 		cin >> choose;
 		while (choose < 0 || choose > 1 || cin.fail()) {
 			cin.clear();
@@ -34,7 +34,7 @@ void ChangePassword(User& user) {
 			ClearPrintDelay("Your choose is illegal. Try again.");
 			cout << "0. Back" << endl;
 			cout << "1. Try again" << endl;
-			cout << "Your choose: ";
+			cout << "Your choice: ";
 			cin >> choose;
 		}
 		if (choose == 0) {
@@ -90,16 +90,16 @@ void UserMenu(User& user) {
 	cout << "0. Log out" << endl;
 	cout << "1. View profile" << endl;
 	cout << "2. Change password" << endl;
-	cout << "Your choose: ";
+	cout << "Your choice: ";
 	cin >> choose;
 	while (choose < 0 || choose > 2 || cin.fail()) {
 		cin.clear();
 		cin.ignore(32767, '\n');
-		ClearPrintDelay("Your choose is illegal. Try again.");
+		ClearPrintDelay("Your choice is illegal. Try again.");
 		cout << "0. Log out" << endl;
 		cout << "1. View profile" << endl;
 		cout << "2. Change password" << endl;
-		cout << "Your choose: ";
+		cout << "Your choice: ";
 		cin >> choose;
 	}
 	switch (choose) {
@@ -181,7 +181,7 @@ void Login() {
 		UserMenu(user);
 	}
 	else {
-		ClearPrintDelay("Your accont not found!");
+		ClearPrintDelay("Your account not found!");
 		MainMenu();
 	}
 }
@@ -190,15 +190,15 @@ void MainMenu() {
 	int choose;
 	cout << "0. Exit" << endl;
 	cout << "1. Log in" << endl;
-	cout << "Your choose: ";
+	cout << "Your choice: ";
 	cin >> choose;
 	while (choose < 0 || choose > 1 || cin.fail()) {
 		cin.clear();
 		cin.ignore(32767, '\n');
-		ClearPrintDelay("Your choose is illegal. Try again.");
+		ClearPrintDelay("Your choice is illegal. Try again.");
 		cout << "0. Exit" << endl;
 		cout << "1. Log in" << endl;
-		cout << "Your choose: ";
+		cout << "Your choice: ";
 		cin >> choose;
 	}
 	switch (choose) {
