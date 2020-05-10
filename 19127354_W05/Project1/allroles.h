@@ -17,6 +17,7 @@ struct User {
 	string degree = "";
 	DateOfBirth DoB = { "", "", "" };
 	int pos;
+	bool active = true;
 };
 void MainMenu();
 void Login();
