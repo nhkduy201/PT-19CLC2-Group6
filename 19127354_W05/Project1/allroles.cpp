@@ -120,6 +120,7 @@ bool CheckLogin(string rolepath, User* user) {
 	ifstream rolefile(rolepath);
 	int NumberOfAcount;
 	int pos;
+	string active;
 	string username;
 	string password;
 	string newline;
@@ -144,11 +145,21 @@ bool CheckLogin(string rolepath, User* user) {
 				getline(rolefile, user->degree);
 			}
 			if (rolepath == "../../Student.txt") {
+				getline(rolefile, active);
+				if (active == "1") {
+					user->active = true;
+				}
+				else {
+					user->active = false;
+				}
 				user->DoB.day = password.substr(0, 2);
 				user->DoB.month = password.substr(2, 2);
 				user->DoB.year = password.substr(4);
 			}
 			if (user->username == username && user->password == password) {
+				if (!user->active) {
+					return false;
+				}
 				user->pos = pos;
 				return true;
 			}
