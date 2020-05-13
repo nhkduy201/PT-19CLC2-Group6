@@ -24,7 +24,7 @@ struct Student {
 	string id;
 	string password;
 	string name;
-	DateOfBirth Dob = { "", "", "" };
+	string DoB;
 	string classID;
 	bool status;
 
@@ -37,4 +37,7 @@ void UserMenu(User& user);
 void ClearPrintDelay(string message);
 void ClearPrintDelay();
 void ViewProfile(User user);
+void removeStudent(string filepath, Student student[]);
+void createStudent(string filepath);
+void editStudent(string filepath, Student student[]);
 #endif
