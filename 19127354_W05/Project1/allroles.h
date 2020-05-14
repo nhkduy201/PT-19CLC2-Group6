@@ -21,13 +21,20 @@ struct User {
 };
 
 struct Student {
+	int No;
 	string id;
 	string password;
+	string lastname;
+	string firstname;
 	string name;
+	string gender;
 	string DoB;
 	string classID;
 	bool status;
+};
 
+struct Class {
+	string classID;
 };
 
 void MainMenu();
