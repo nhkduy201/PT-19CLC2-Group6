@@ -47,4 +47,10 @@ void ViewProfile(User user);
 void removeStudent(string filepath, Student student[]);
 void createStudent(string filepath);
 void editStudent(string filepath, Student student[]);
+void createStudent(string filepath);
+void removeStudent(string filepath, Student student[]);
+void editStudent(string filepath, Student student[]);
+void viewStudents(string filepath, Student student[]);
+void viewClasses(Class a[]);
+void moveStudent(string filepath, Student student[]);
 #endif

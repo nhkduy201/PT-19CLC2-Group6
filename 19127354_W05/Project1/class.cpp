@@ -43,11 +43,11 @@ void createStudent(string filepath) {
 }
 
 void removeStudent(string filepath, Student student[]) {
-	int NumberOfStudent;
+	int NumberOfStudent = 0;
 	string findingID;
 	ifstream fin;
 	fin.open(filepath + ".txt");
-	if (!fin.is_open) {
+	if (!fin.is_open()) {
 		cout << "Class's not found";
 	}
 	else {
@@ -94,11 +94,11 @@ void removeStudent(string filepath, Student student[]) {
 }
 
 void editStudent(string filepath, Student student[]) {
-	int NumberOfStudent;
+	int NumberOfStudent = 0;
 	string findingID;
 	ifstream fin;
 	fin.open(filepath + ".txt");
-	if (!fin.is_open) {
+	if (!fin.is_open()) {
 		cout << "Class's not found";
 	}
 	else {
@@ -176,10 +176,10 @@ void editStudent(string filepath, Student student[]) {
 }
 
 void viewStudents(string filepath, Student student[]) {
-	int NumberOfStudent;
+	int NumberOfStudent = 0;
 	ifstream fin;
 	fin.open(filepath + ".txt");
-	if (!fin.is_open) {
+	if (!fin.is_open()) {
 		cout << "Class's not found";
 	}
 	else {
@@ -209,10 +209,10 @@ void viewStudents(string filepath, Student student[]) {
 }
 
 void viewClasses(Class a[]) {
-	int NumberOfClass;
+	int NumberOfClass = 0;
 	ifstream fin;
 	fin.open("../../Class.txt");
-	if (!fin.is_open) {
+	if (!fin.is_open()) {
 		cout << "Missing file" << endl;
 	}
 	else {
@@ -227,18 +227,20 @@ void viewClasses(Class a[]) {
 	}
 }
 
-void importCsv(string filepath, Student student[]) {
+void importCsv(string filepath, Student student[])
+{
 
 }
 
-void moveStudent(string filepath, Student student[]) {
+void moveStudent(string filepath, Student student[])
+{
 	string findingID;
 	Student temp;
-	int NumberOfStudent;
+	int NumberOfStudent = 0;
 	int i;
 	ifstream fin1;
 	fin1.open(filepath + ".txt");
-	if (!fin1.is_open) {
+	if (!fin1.is_open()) {
 		cout << "Class's not found";
 	}
 	else {
@@ -295,7 +297,7 @@ void moveStudent(string filepath, Student student[]) {
 
 	ifstream fin2;
 	fin2.open(anotherClass + ".txt");
-	if (!fin2.is_open) {
+	if (!fin2.is_open()) {
 		cout << "Class's not found";
 	}
 	else {
