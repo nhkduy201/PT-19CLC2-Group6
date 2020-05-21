@@ -158,8 +158,9 @@ void editStudent(string filepath, Student student[]) {
 	fin.close();
 	cout << "Input Student ID you want to edit: ";
 	getline(cin, findingID);
+	int i;
 	int temp;
-	for (int i = 0; i < NumberOfStudent; i++) {
+	for (i = 0; i < NumberOfStudent; i++) {
 		if (findingID == student[i].id) {
 			temp = i;
 			int choose;
@@ -183,14 +184,17 @@ void editStudent(string filepath, Student student[]) {
 			}
 			switch (choose){
 			case 1: {
+				cin.ignore();
 				getline(cin, student[i].name);
 				break; 
 			}
 			case 2: {
+				cin.ignore();
 				getline(cin, student[i].password);
 				break;
 			}
 			case 3: {
+				cin.ignore();
 				getline(cin, student[i].DoB);
 				break;
 			}
@@ -199,6 +203,7 @@ void editStudent(string filepath, Student student[]) {
 				break;
 			}
 			}
+			break;
 		}
 	}
 
@@ -217,7 +222,6 @@ void editStudent(string filepath, Student student[]) {
 	fout.close();
 	
 	Student std[1000];
-	ifstream fin;
 	fin.open("../../Student.txt");
 	int NumberOfStudents;
 	fin >> NumberOfStudents;
@@ -227,7 +231,6 @@ void editStudent(string filepath, Student student[]) {
 		getline(fin, std[i].password);
 		getline(fin, std[i].name);
 		fin >> std[i].status;
-		fin.ignore();
 	}
 	for (int i = 0; i < NumberOfStudents; i++) {
 		if (findingID == std[i].id) {
@@ -238,15 +241,16 @@ void editStudent(string filepath, Student student[]) {
 			break;
 		}
 	}
-	ofstream fout;
-	fout.open("../../Student.txt");
-	fout << NumberOfStudents;
+	ofstream outMain;
+	outMain.open("../../Student.txt");
+	outMain << NumberOfStudents << endl;
 	for (int i = 0; i < NumberOfStudents; i++) {
-		fout << std[i].id << endl;
-		fout << std[i].password << endl;
-		fout << std[i].name << endl;
-		fout << std[i].status << endl;
+		outMain << std[i].id << endl;
+		outMain << std[i].password << endl;
+		outMain << std[i].name << endl;
+		outMain << std[i].status << endl;
 	}
+	outMain.close();
 }
 
 void viewStudents(string filepath, Student student[]) {
@@ -435,12 +439,12 @@ void importCsv(string filepath, Student student[])
 			student[count].status = 1;
 
 			string S = student[count].DoB;
+			S.erase(S.begin() + 2);
 			S.erase(S.begin() + 4);
-			S.erase(S.begin() + 6);
 			student[count].password = S;
 
-			S.insert(4, ' ');
-			S.insert(7, ' ');
+			S.insert(2, 1,' ');
+			S.insert(5, 1,' ');
 			student[count].DoB = S;
 
 			count += 1;
@@ -473,7 +477,6 @@ void importCsv(string filepath, Student student[])
 			in >> std[i].status;
 		}
 		NumberOfStudent += count;
-		ofstream fout;
 		fout.open("../../Student.txt");
 		fout << NumberOfStudent;
 		for (int i = 0; i < temp; i++) {
@@ -510,7 +513,8 @@ void classMenu()
 	cout << "5. Move student from class A to B" << endl;
 	cout << "6. View list of classes" << endl;
 	cout << "7. View students of a class" << endl;
-	
+	cout << endl;
+	cout << "Enter  your choice: ";
 	cin >> choose;
 
 	while (choose < 0 || choose > 7 || cin.fail())
@@ -529,6 +533,9 @@ void classMenu()
 
 		cin >> choose;
 	}
+
+	cout << endl;
+	cin.ignore();
 	switch (choose)
 	{
 	case 0:

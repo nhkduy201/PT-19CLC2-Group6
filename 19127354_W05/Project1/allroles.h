@@ -51,4 +51,5 @@ void editStudent(string filepath, Student student[]);
 void viewStudents(string filepath, Student student[]);
 void viewClasses(Class a[]);
 void moveStudent(string filepath, Student student[]);
+void classMenu();
 #endif

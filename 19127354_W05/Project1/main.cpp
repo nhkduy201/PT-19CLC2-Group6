@@ -1,6 +1,7 @@
 #pragma once
 #include"allroles.h"
 int main(){
-	MainMenu();
+	/*MainMenu();*/
+	classMenu();
 	return 0;
 }
