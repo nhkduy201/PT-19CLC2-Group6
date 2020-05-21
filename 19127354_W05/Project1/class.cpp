@@ -23,7 +23,7 @@ void createStudent(string filepath) {
 	cin >> status;
 
 	ofstream file;
-	file.open(filepath + ".txt", ios::app);
+	file.open(filepath + "-Student.txt", ios::app);
 	file << id << endl;
 	file << password << endl;
 	file << name << endl;
@@ -46,7 +46,7 @@ void removeStudent(string filepath, Student student[]) {
 	int NumberOfStudent = 0;
 	string findingID;
 	ifstream fin;
-	fin.open(filepath + ".txt");
+	fin.open(filepath + "-Student.txt");
 	if (!fin.is_open()) {
 		cout << "Class's not found";
 	}
@@ -79,7 +79,7 @@ void removeStudent(string filepath, Student student[]) {
 	}
 
 	ofstream fout;
-	fout.open(filepath + ".txt");
+	fout.open(filepath + "-Student.txt");
 	fout << NumberOfStudent << endl;
 	for (int i = 0; i < NumberOfStudent; i++) {
 		fout << student[i].id << endl;
@@ -97,7 +97,7 @@ void editStudent(string filepath, Student student[]) {
 	int NumberOfStudent = 0;
 	string findingID;
 	ifstream fin;
-	fin.open(filepath + ".txt");
+	fin.open(filepath + "-Student.txt");
 	if (!fin.is_open()) {
 		cout << "Class's not found";
 	}
@@ -161,7 +161,7 @@ void editStudent(string filepath, Student student[]) {
 	}
 
 	ofstream fout;
-	fout.open(filepath + ".txt");
+	fout.open(filepath + "-Student.txt");
 	fout << NumberOfStudent << endl;
 	for (int i = 0; i < NumberOfStudent; i++) {
 		fout << student[i].id << endl;
@@ -173,12 +173,13 @@ void editStudent(string filepath, Student student[]) {
 		fout << endl;
 	}
 	fout.close();
+	//van chua edit tren student.txt;
 }
 
 void viewStudents(string filepath, Student student[]) {
 	int NumberOfStudent = 0;
 	ifstream fin;
-	fin.open(filepath + ".txt");
+	fin.open(filepath + "-Student.txt");
 	if (!fin.is_open()) {
 		cout << "Class's not found";
 	}
@@ -234,7 +235,7 @@ void moveStudent(string filepath, Student student[])
 	int NumberOfStudent = 0;
 	int i;
 	ifstream fin1;
-	fin1.open(filepath + ".txt");
+	fin1.open(filepath + "-Student.txt");
 	if (!fin1.is_open()) {
 		cout << "Class's not found";
 	}
@@ -273,7 +274,7 @@ void moveStudent(string filepath, Student student[])
 	}
 
 	ofstream fout1;
-	fout1.open(filepath + ".txt");
+	fout1.open(filepath + "-Student.txt");
 	fout1 << NumberOfStudent << endl;
 	for (int i = 0; i < NumberOfStudent; i++) {
 		fout1 << student[i].id << endl;
@@ -291,7 +292,7 @@ void moveStudent(string filepath, Student student[])
 	getline(cin, anotherClass);
 
 	ifstream fin2;
-	fin2.open(anotherClass + ".txt");
+	fin2.open(anotherClass + "-Student.txt");
 	if (!fin2.is_open()) {
 		cout << "Class's not found";
 	}
@@ -322,7 +323,7 @@ void moveStudent(string filepath, Student student[])
 	}
 
 	ofstream fout2;
-	fout2.open(anotherClass + ".txt");
+	fout2.open(anotherClass + "-Student.txt");
 	fout2 << NumberOfStudent << endl;
 	for (int i = 0; i < NumberOfStudent; i++) {
 		fout2 << student[i].id << endl;
@@ -336,7 +337,7 @@ void moveStudent(string filepath, Student student[])
 	fout2.close();
 }
 
-void importStudent(ifstream&fin, Student& std)
+void importStudent(ifstream& fin, Student& std)
 {
 	fin >> std.No;
 	fin.ignore();
@@ -346,8 +347,63 @@ void importStudent(ifstream&fin, Student& std)
 	getline(fin, std.classID, '\n');
 }
 
-void importCsv(string filepath, Student* std)
+void importCsv(string filepath, Student student[])
 {
+	ifstream fin;
+	fin.open(filepath + "-Student.csv");
+	int count = 0;
+	string fisrtline;
+	getline(fin, fisrtline);
+	while (fin.good()) {
+		importStudent(fin, student[count]);
+		student[count].status = 1;
+		
+		string S = student[count].DoB;
+		S.erase(S.begin() + 4);
+		S.erase(S.begin() + 6);
+		student[count].password = S;
+
+		S.insert(4,' ');
+		S.insert(7,' ');
+		student[count].DoB = S;
+
+		count += 1;
+	}
+	fin.close();
+	ofstream fout;
+	fout.open(filepath + "-Student.csv");
+	fout << count << endl;
+	for (int i = 0; i < count; i++) {
+		fout << student[i].id << endl;
+		fout << student[i].password << endl;
+		fout << student[i].name << endl;
+		fout << student[i].DoB << endl;
+		fout << student[i].classID << endl;
+		fout << student[i].status << endl;
+		fout << endl;
+	}
+	fout.close();
+
+	ifstream fin;
+	fin.open("../../Student.txt");
+	int NumberOfStudent;
+	fin >> NumberOfStudent;
+	NumberOfStudent += count;
+	ofstream fout;
+	fout.open("../../Student.txt", ios::ate);
+	fout.seekp(0, fout.beg);
+	fout << NumberOfStudent;
+	fout.seekp(0, fout.end);
+	for (int i = 0; i < count; i++) {
+		fout << student[i].id << endl;
+		fout << student[i].password << endl;
+		fout << student[i].name << endl;
+		fout << student[i].DoB << endl;
+		fout << student[i].classID << endl;
+		fout << student[i].status << endl;
+	}
+	fin.close();
+	fout.close();
 
 }
 
