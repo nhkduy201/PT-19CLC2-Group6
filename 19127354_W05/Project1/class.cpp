@@ -227,11 +227,6 @@ void viewClasses(Class a[]) {
 	}
 }
 
-void importCsv(string filepath, Student student[])
-{
-
-}
-
 void moveStudent(string filepath, Student student[])
 {
 	string findingID;
@@ -341,5 +336,72 @@ void moveStudent(string filepath, Student student[])
 	fout2.close();
 }
 
+void importStudent(ifstream&fin, Student& std)
+{
+	fin >> std.No;
+	fin.ignore();
+	getline(fin, std.id, ',');
+	getline(fin, std.name, ',');
+	getline(fin, std.DoB, ',');
+	getline(fin, std.classID, '\n');
+}
 
+void importCsv(string filepath, Student* std)
+{
 
+}
+
+void classMenu()
+{
+	ClearPrintDelay();
+	int choose;
+
+	cout << "0. Exit" << endl;
+	cout << "1. Import Csv" << endl;
+	cout << "2. Add new student" << endl;
+	cout << "3. Edit a student" << endl;
+	cout << "4. Remove a student" << endl;
+	cout << "5. Move student from class A to B" << endl;
+	cout << "6. View list of classes" << endl;
+	cout << "7. View students of a class" << endl;
+	
+	cin >> choose;
+
+	while (choose < 0 || choose > 7 || cin.fail())
+	{
+		cin.clear();
+		cin.ignore(32767, '\n');
+		ClearPrintDelay("Your choice is illegal. Try again.");
+		cout << "0. Exit" << endl;
+		cout << "1. Import Csv" << endl;
+		cout << "2. Add new student" << endl;
+		cout << "3. Edit a student" << endl;
+		cout << "4. Remove a student" << endl;
+		cout << "5. Move student from class A to B" << endl;
+		cout << "6. View list of classes" << endl;
+		cout << "7. View students of a class" << endl;
+
+		cin >> choose;
+	}
+	switch (choose)
+	{
+	case 0:
+		MainMenu();
+		break;
+	case 1:
+
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
+	case 6:
+		break;
+	case 7:
+		break;
+	}
+}

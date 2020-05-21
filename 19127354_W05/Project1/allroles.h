@@ -24,8 +24,6 @@ struct Student {
 	int No;
 	string id;
 	string password;
-	string lastname;
-	string firstname;
 	string name;
 	string gender;
 	string DoB;

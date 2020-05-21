@@ -115,6 +115,7 @@ void UserMenu(User& user) {
 		UserMenu(user);
 	}
 }
+
 bool CheckLogin(string rolepath, User* user) {
 	ClearPrintDelay();
 	ifstream rolefile(rolepath);
