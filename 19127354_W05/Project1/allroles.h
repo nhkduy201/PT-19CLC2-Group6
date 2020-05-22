@@ -37,7 +37,7 @@ struct Class {
 
 void MainMenu();
 void Login();
-bool CheckLogin(string rolepath, User* user);
+bool CheckLogin(string rolepath, User* user, bool& isWrongPw);
 void UserMenu(User& user);
 void ClearPrintDelay(string message);
 void ClearPrintDelay();

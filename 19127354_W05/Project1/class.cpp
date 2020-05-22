@@ -10,19 +10,19 @@ void createStudent(string filepath) {
 	int NumberOfStudent;
 	Student student[1000];
 
-	cout << "Student ID: ";
+	cout << "\tStudent ID: ";
 	getline(cin, id);
-	cout << "Student name: ";
+	cout << "\tStudent name: ";
 	getline(cin, name);
-	cout << "Date of Birth (DD MM YYYY): ";
+	cout << "\tDate of Birth (DD MM YYYY): ";
 	getline(cin, DoB);
-	cout << "Student password will be DDMMYYYY (DoB without space)" << endl;
+	cout << "\tDefault student password will be DDMMYYYY (DoB without space)" << endl;
 	string S = DoB;
 	S.erase(5, 1);
 	S.erase(2, 1);
 	password = S;
 	classID = filepath;
-	cout << "Status: ";
+	cout << "\tStatus: ";
 	cin >> status;
 	ifstream fin;
 	fin.open("../../" + filepath + "-Student.txt");
@@ -88,6 +88,7 @@ void createStudent(string filepath) {
 
 	in.close();
 	out.close();
+	ClearPrintDelay("\n\tCreate successfully!");
 }
 
 void removeStudent(string filepath, Student student[]) {
@@ -112,7 +113,7 @@ void removeStudent(string filepath, Student student[]) {
 		}
 	}
 	fin.close();
-	cout << "Input Student ID you want to remove: ";
+	cout << "\tInput Student ID you want to remove: ";
 	getline(cin, findingID);
 	int i;
 	for (i = 0; i < NumberOfStudent; i++) {
@@ -178,6 +179,7 @@ void removeStudent(string filepath, Student student[]) {
 		outMain << std[i].status << endl;
 	}
 	outMain.close();
+	ClearPrintDelay("Remove successfully!");
 }
 
 void editStudent(string filepath, Student student[]) {
@@ -202,53 +204,55 @@ void editStudent(string filepath, Student student[]) {
 		}
 	}
 	fin.close();
-	cout << "Input Student ID you want to edit: ";
+	cout << "\tInput Student ID you want to edit: ";
 	getline(cin, findingID);
 	int i;
 	int temp;
+	ClearPrintDelay();
 	for (i = 0; i < NumberOfStudent; i++) {
 		if (findingID == student[i].id) {
 			temp = i;
 			int choose;
-			cout << "1. Edit name\n";
-			cout << "2. Edit password\n";
-			cout << "3. Edit DoB\n";
-			cout << "4. Edit status\n";
-			cout << "Your choice: ";
+			cout << "\n\t1. Edit name\n";
+			cout << "\t2. Edit password\n";
+			cout << "\t3. Edit DoB\n";
+			cout << "\t4. Edit status\n";
+			cout << "\n\tYour choice: ";
 			cin >> choose;
 
 			while (choose < 1 || choose > 4 || cin.fail()) {
 				cin.clear();
 				cin.ignore(32767, '\n');
-				ClearPrintDelay("Your choice is illegal. Try again.");
-				cout << "1. Edit name\n";
-				cout << "2. Edit password\n";
-				cout << "3. Edit DoB\n";
-				cout << "4. Edit status\n";
-				cout << "Your choice: ";
+				ClearPrintDelay("\n\tYour choice is illegal. Try again.");
+				cout << "\n\t1. Edit name\n";
+				cout << "\t2. Edit password\n";
+				cout << "\t3. Edit DoB\n";
+				cout << "\t4. Edit status\n";
+				cout << "\n\tYour choice: ";
 				cin >> choose;
 			}
+			ClearPrintDelay();
 			switch (choose){
 			case 1: {
 				cin.ignore();
-				cout << "Input name: ";
+				cout << "\n\tInput name: ";
 				getline(cin, student[i].name);
 				break; 
 			}
 			case 2: {
 				cin.ignore();
-				cout << "Input password: ";
+				cout << "\n\tInput password: ";
 				getline(cin, student[i].password);
 				break;
 			}
 			case 3: {
 				cin.ignore();
-				cout << "Input DoB: ";
+				cout << "\n\tInput DoB: ";
 				getline(cin, student[i].DoB);
 				break;
 			}
 			case 4: {
-				cout << "Input status: ";
+				cout << "\n\tInput status: ";
 				cin >> student[i].status;
 				break;
 			}
@@ -301,6 +305,7 @@ void editStudent(string filepath, Student student[]) {
 		outMain << std[i].status << endl;
 	}
 	outMain.close();
+	ClearPrintDelay("\n\tEdit successfully!");
 }
 
 void viewStudents(string filepath, Student student[]) {
@@ -326,14 +331,16 @@ void viewStudents(string filepath, Student student[]) {
 	fin.close();
 
 	ClearPrintDelay();
+	cout << endl;
 	for (int i = 0; i < NumberOfStudent; i++) {
-		cout << student[i].id << endl;
-		cout << student[i].name << endl;
-		cout << student[i].DoB << endl;
-		cout << student[i].classID << endl;
-		cout << student[i].status << endl;
+		cout << "\t" << student[i].id << endl;
+		cout << "\t" << student[i].name << endl;
+		cout << "\t" << student[i].DoB << endl;
+		cout << "\t" << student[i].classID << endl;
+		cout << "\t" << student[i].status << endl;
 		cout << endl;
 	}
+	system("pause");
 }
 
 void viewClasses(Class a[]) {
@@ -350,9 +357,11 @@ void viewClasses(Class a[]) {
 		}
 	}
 	ClearPrintDelay();
+	cout << endl;
 	for (int i = 0; i < NumberOfClass; i++) {
-		cout << a[i].classID << endl;
+		cout << "\t" << a[i].classID << endl;
 	}
+	system("pause");
 }
 
 void moveStudent(string filepath, Student student[])
@@ -380,7 +389,7 @@ void moveStudent(string filepath, Student student[])
 		}
 	}
 	fin1.close();
-	cout << "Input Student ID you want to move: ";
+	cout << "\tInput Student ID you want to move: ";
 	getline(cin, findingID);
 
 	for (i = 0; i < NumberOfStudent; i++) {
@@ -414,7 +423,7 @@ void moveStudent(string filepath, Student student[])
 	}
 	fout1.close();
 	string anotherClass;
-	cout << "Enter the class you want " << findingID << " to move to: ";
+	cout << "\tEnter the class you want " << findingID << " to move to: ";
 	getline(cin, anotherClass);
 
 	ifstream fin2;
@@ -457,6 +466,7 @@ void moveStudent(string filepath, Student student[])
 		fout2 << endl;
 	}
 	fout2.close();
+	ClearPrintDelay("\n\tMove successfully!");
 }
 
 void importStudent(ifstream& fin, Student& std)
@@ -542,6 +552,7 @@ void importCsv(string filepath, Student student[])
 
 	}
 	fin.close();
+	ClearPrintDelay("\n\tImport successfully!");
 }
 
 void classMenu()
@@ -552,16 +563,15 @@ void classMenu()
 	ClearPrintDelay();
 	int choose;
 
-	cout << "0. Exit" << endl;
-	cout << "1. Import Csv" << endl;
-	cout << "2. Add new student" << endl;
-	cout << "3. Edit a student" << endl;
-	cout << "4. Remove a student" << endl;
-	cout << "5. Move student from class A to B" << endl;
-	cout << "6. View list of classes" << endl;
-	cout << "7. View students of a class" << endl;
-	cout << endl;
-	cout << "Enter  your choice: ";
+	cout << "\n\t0. Exit" << endl;
+	cout << "\t1. Import Csv" << endl;
+	cout << "\t2. Add new student" << endl;
+	cout << "\t3. Edit a student" << endl;
+	cout << "\t4. Remove a student" << endl;
+	cout << "\t5. Move student from class A to B" << endl;
+	cout << "\t6. View list of classes" << endl;
+	cout << "\t7. View students of a class\n" << endl;
+	cout << "\tEnter  your choice: ";
 	cin >> choose;
 
 	while (choose < 0 || choose > 7 || cin.fail())
@@ -569,47 +579,46 @@ void classMenu()
 		cin.clear();
 		cin.ignore(32767, '\n');
 		ClearPrintDelay("Your choice is illegal. Try again.");
-		cout << "0. Exit" << endl;
-		cout << "1. Import Csv" << endl;
-		cout << "2. Add new student" << endl;
-		cout << "3. Edit a student" << endl;
-		cout << "4. Remove a student" << endl;
-		cout << "5. Move student from class A to B" << endl;
-		cout << "6. View list of classes" << endl;
-		cout << "7. View students of a class" << endl;
-
-		cin >> choose;
+		cout << "\n\t0. Exit" << endl;
+		cout << "\t1. Import Csv" << endl;
+		cout << "\t2. Add new student" << endl;
+		cout << "\t3. Edit a student" << endl;
+		cout << "\t4. Remove a student" << endl;
+		cout << "\t5. Move student from class A to B" << endl;
+		cout << "\t6. View list of classes" << endl;
+		cout << "\t7. View students of a class\n" << endl;
+		cout << "\tEnter  your choice: ";
 	}
 
 	cout << endl;
 	cin.ignore();
+	ClearPrintDelay();
 	switch (choose)
 	{
 	case 0:
-		MainMenu();
 		break;
 	case 1:
-		cout << "Enter classID: ";
+		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
 		importCsv(classID, student);
 		break;
 	case 2:
-		cout << "Enter classID: ";
+		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
 		createStudent(classID);
 		break;
 	case 3:
-		cout << "Enter classID: ";
+		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
 		editStudent(classID, student);
 		break;
 	case 4:
-		cout << "Enter classID: ";
+		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
 		removeStudent(classID, student);
 		break;
 	case 5:
-		cout << "Enter classID: ";
+		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
 		moveStudent(classID, student);
 		break;
@@ -617,7 +626,7 @@ void classMenu()
 		viewClasses(clas);
 		break;
 	case 7:
-		cout << "Enter classID: ";
+		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
 		viewStudents(classID, student);
 		break;

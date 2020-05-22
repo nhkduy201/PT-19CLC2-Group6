@@ -1,12 +1,12 @@
-#pragma once
+﻿#pragma once
 #include"allroles.h"
 void ClearPrintDelay() {
 	system("cls");
 }
 void ClearPrintDelay(string message) {
 	system("cls");
-	cout << message << endl;
-	Sleep(3000);
+	cout << message;
+	Sleep(2000);
 	system("cls");
 }
 void ChangePassword(User& user) {
@@ -16,25 +16,30 @@ void ChangePassword(User& user) {
 	int posstart = user.pos + user.username.length() + 2;
 	int posend = posstart + user.password.length() + 2;
 	int choose = -1;
-	cout << "Enter old password: ";
+	cout << "\n\tEnter old password: ";
 	cin >> oldPassword;
-	cout << "Enter new password: ";
+	cout << "\n\tEnter new password: ";
 	cin >> newPassword;
-	cout << "Confirm new password: ";
+	cout << "\n\tConfirm new password: ";
 	cin >> confirmPassword;
 	while (oldPassword != user.password || newPassword != confirmPassword) {
-		ClearPrintDelay("Your old password is wrong or confirm new password failed!");
-		cout << "0. Back" << endl;
-		cout << "1. Try again" << endl;
-		cout << "Your choice: ";
+		if (oldPassword != user.password) {
+			ClearPrintDelay("\n\tYour old password is wrong!");
+		}
+		else {
+			ClearPrintDelay("\n\tConfirm new password failed!");
+		}
+		cout << "\n\t0. Back" << endl;
+		cout << "\t1. Try again" << endl;
+		cout << "\n\tYour choice: ";
 		cin >> choose;
 		while (choose < 0 || choose > 1 || cin.fail()) {
 			cin.clear();
 			cin.ignore(32767, '\n');
-			ClearPrintDelay("Your choose is illegal. Try again.");
-			cout << "0. Back" << endl;
-			cout << "1. Try again" << endl;
-			cout << "Your choice: ";
+			ClearPrintDelay("\n\tYour choose is illegal. Try again.");
+			cout << "\n\t0. Back" << endl;
+			cout << "\t1. Try again" << endl;
+			cout << "\n\tYour choice: ";
 			cin >> choose;
 		}
 		if (choose == 0) {
@@ -42,11 +47,11 @@ void ChangePassword(User& user) {
 		}
 		else {
 			ClearPrintDelay();
-			cout << "Enter old password: ";
+			cout << "\n\tEnter old password: ";
 			cin >> oldPassword;
-			cout << "Enter new password: ";
+			cout << "\n\tEnter new password: ";
 			cin >> newPassword;
-			cout << "Confirm new password: ";
+			cout << "\n\tConfirm new password: ";
 			cin >> confirmPassword;
 		}
 	}
@@ -67,39 +72,44 @@ void ChangePassword(User& user) {
 			rolefile << newPassword << endl;
 			rolefile << remain;
 			rolefile.close();
-			ClearPrintDelay("Change successfully!");
+			ClearPrintDelay("\n\tChange successfully!");
 		}
 	}
 }
 void ViewProfile(User user) {
 	ClearPrintDelay();
-	cout << "Role: " << uppercase << user.role << endl;
-	cout << "Name: " << uppercase << user.name << endl;
-	cout << "Username: " << user.username << endl;
+	cout << "\n\tRole: " << uppercase << user.role << endl;
+	cout << "\tName: " << uppercase << user.name << endl;
+	cout << "\tUsername: " << user.username << endl;
 	if (user.role == "Lecturer") {
-		cout << "Degree: " << user.degree << endl;
-	}
+		cout << "\tDegree: " << user.degree << endl << endl;
+	}else
 	if (user.role == "Student") {
-		cout << "Date of birth: " << user.DoB.day + "-" + user.DoB.month + "-" + user.DoB.year << endl;
+		cout << "\tDate of birth: " << user.DoB.day + "-" + user.DoB.month + "-" + user.DoB.year << endl << endl;
+	}
+	else {
+		cout << endl;
 	}
 	system("pause");
 }
 void UserMenu(User& user) {
 	ClearPrintDelay();
 	int choose;
-	cout << "0. Log out" << endl;
-	cout << "1. View profile" << endl;
-	cout << "2. Change password" << endl;
-	cout << "Your choice: ";
+	cout << "\n\t0. Log out" << endl;
+	cout << "\t1. View profile" << endl;
+	cout << "\t2. Change password" << endl;
+	cout << "\t3. " + user.role + " Menu" << endl;
+	cout << "\tYour choice: ";
 	cin >> choose;
-	while (choose < 0 || choose > 2 || cin.fail()) {
+	while (choose < 0 || choose > 3 || cin.fail()) {
 		cin.clear();
 		cin.ignore(32767, '\n');
-		ClearPrintDelay("Your choice is illegal. Try again.");
-		cout << "0. Log out" << endl;
-		cout << "1. View profile" << endl;
-		cout << "2. Change password" << endl;
-		cout << "Your choice: ";
+		ClearPrintDelay("\n\tYour choice is illegal. Try again.");
+		cout << "\n\t0. Log out" << endl;
+		cout << "\t1. View profile" << endl;
+		cout << "\t2. Change password" << endl;
+		cout << "\t3. " + user.role + " Menu" << endl;
+		cout << "\tYour choice: ";
 		cin >> choose;
 	}
 	switch (choose) {
@@ -113,10 +123,24 @@ void UserMenu(User& user) {
 	case 2:
 		ChangePassword(user);
 		UserMenu(user);
+		break;
+	case 3:
+		if (user.role == "Staff") {
+			classMenu();
+			UserMenu(user);
+		}
+		else if (user.role == "Lecturer") {
+			ClearPrintDelay("\n\tYour role feature has not been completed. We're so sorry about that!");
+			UserMenu(user);
+		}
+		else {
+			ClearPrintDelay("\n\tYour role feature has not been completed. We're so sorry about that!");
+			UserMenu(user);
+		}
 	}
 }
 
-bool CheckLogin(string rolepath, User* user) {
+bool CheckLogin(string rolepath, User* user, bool& isWrongPw) {
 	ClearPrintDelay();
 	ifstream rolefile(rolepath);
 	int NumberOfAcount;
@@ -164,6 +188,9 @@ bool CheckLogin(string rolepath, User* user) {
 				user->pos = pos;
 				return true;
 			}
+			else if (user->username == username && user->password != password) {
+				isWrongPw = true;
+			}
 		}
 		return false;
 	}
@@ -177,40 +204,48 @@ void Login() {
 	string lecturerpath = "../../Lecturer.txt";
 	string studentpath = "../../Student.txt";
 	User user;
-	cout << "Username: ";
+	bool isWrongPw = false;
+	cout << "\n\tUsername: ";
 	cin >> user.username;
-	cout << "Password: ";
+	cout << "\n\tPassword: ";
 	cin >> user.password;
-	if (CheckLogin(staffpath, &user)) {
-		ClearPrintDelay("Log in successfully!\nWelcome " + user.role + " " + user.name);
+	if (CheckLogin(staffpath, &user, isWrongPw)) {
+		ClearPrintDelay("\n\t _    _  _____  _      _____  _____ ___  ___ _____ \n\t| |  | ||  ___|| |    /  __ \\|  _  ||  \\/  ||  ___|\n\t| |  | || |__  | |    | /  \\/| | | || .  . || |__  \n\t| |/\\| ||  __| | |    | |    | | | || |\\/| ||  __| \n\t\\  /\\  /| |___ | |____| \\__/\\\\ \\_/ /| |  | || |___ \n\t \\/  \\/ \\____/ \\_____/ \\____/ \\___/ \\_|  |_/\\____/ \n\n\t" + user.role + ": " + user.name);
 		UserMenu(user);
 	}
-	else if (CheckLogin(lecturerpath, &user)) {
-		ClearPrintDelay("Log in successfully!\nWelcome " + user.role + " " + user.name);
+	else if (CheckLogin(lecturerpath, &user, isWrongPw)) {
+		ClearPrintDelay("\n\t _    _  _____  _      _____  _____ ___  ___ _____ \n\t| |  | ||  ___|| |    /  __ \\|  _  ||  \\/  ||  ___|\n\t| |  | || |__  | |    | /  \\/| | | || .  . || |__  \n\t| |/\\| ||  __| | |    | |    | | | || |\\/| ||  __| \n\t\\  /\\  /| |___ | |____| \\__/\\\\ \\_/ /| |  | || |___ \n\t \\/  \\/ \\____/ \\_____/ \\____/ \\___/ \\_|  |_/\\____/ \n\n\t" + user.role + ": " + user.name);
 		UserMenu(user);
-	} if (CheckLogin(studentpath, &user)) {
-		ClearPrintDelay("Log in successfully!\nWelcome " + user.role + " " + user.name);
+	}else if (CheckLogin(studentpath, &user, isWrongPw)) {
+		ClearPrintDelay("\n\t _    _  _____  _      _____  _____ ___  ___ _____ \n\t| |  | ||  ___|| |    /  __ \\|  _  ||  \\/  ||  ___|\n\t| |  | || |__  | |    | /  \\/| | | || .  . || |__  \n\t| |/\\| ||  __| | |    | |    | | | || |\\/| ||  __| \n\t\\  /\\  /| |___ | |____| \\__/\\\\ \\_/ /| |  | || |___ \n\t \\/  \\/ \\____/ \\_____/ \\____/ \\___/ \\_|  |_/\\____/ \n\n\t" + user.role + ": " + user.name);
 		UserMenu(user);
 	}
 	else {
-		ClearPrintDelay("Your account not found!");
+		if (isWrongPw) {
+			ClearPrintDelay("\n\tWrong password!");
+		}
+		else {
+			ClearPrintDelay("\n\tYour account not found!");
+		}
 		MainMenu();
 	}
 }
 void MainMenu() {
 	ClearPrintDelay();
 	int choose;
-	cout << "0. Exit" << endl;
-	cout << "1. Log in" << endl;
-	cout << "Your choice: ";
+	cout << "\n\t___  ___        _         ___  ___                    \n\t|  \\/  |       (_)        |  \\/  |                    \n\t| .  . |  __ _  _  _ __   | .  . |  ___  _ __   _   _ \n\t| |\\/| | / _` || || '_ \\  | |\\/| | / _ \\| '_ \\ | | | |\n\t| |  | || (_| || || | | | | |  | ||  __/| | | || |_| |\n\t\\_|  |_/ \\__,_||_||_| |_| \\_|  |_/ \\___||_| |_| \\__,_|\n" << endl;
+	cout << "\t0. Exit" << endl;
+	cout << "\t1. Log in" << endl;
+	cout << "\tYour choice: ";
 	cin >> choose;
 	while (choose < 0 || choose > 1 || cin.fail()) {
 		cin.clear();
 		cin.ignore(32767, '\n');
-		ClearPrintDelay("Your choice is illegal. Try again.");
-		cout << "0. Exit" << endl;
-		cout << "1. Log in" << endl;
-		cout << "Your choice: ";
+		ClearPrintDelay("\n\tYour choice is illegal. Try again.");
+		cout << "\n\t___  ___        _         ___  ___                    \n\t|  \\/  |       (_)        |  \\/  |                    \n\t| .  . |  __ _  _  _ __   | .  . |  ___  _ __   _   _ \n\t| |\\/| | / _` || || '_ \\  | |\\/| | / _ \\| '_ \\ | | | |\n\t| |  | || (_| || || | | | | |  | ||  __/| | | || |_| |\n\t\\_|  |_/ \\__,_||_||_| |_| \\_|  |_/ \\___||_| |_| \\__,_|\n" << endl;
+		cout << "\t0. Exit" << endl;
+		cout << "\t1. Log in" << endl;
+		cout << "\tYour choice: ";
 		cin >> choose;
 	}
 	switch (choose) {

@@ -1,4 +1,4 @@
-4
+7
 19127466
 01012001
 Dinh Hoa Lu
@@ -15,3 +15,15 @@ Le Thanh Dat
 01042001
 Tang Tuong Khang
 1
+19127890
+01102001
+Nguyen Van Z
+1
+19121212
+01022001
+Nguyen Van Y
+1
+19121912
+23102001
+Nguyen Van X
+0
