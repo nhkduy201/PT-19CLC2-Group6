@@ -1,4 +1,4 @@
-5
+6
 19127001
 29012001
 Nguyen Van Teo
@@ -31,6 +31,13 @@ I Love You 3000
 01042001
 Tang Tuong Khang
 01 04 2001
+19CLC0
+1
+
+19127377
+01022001
+Nguyen Huynh Khanh Duy
+01 02 2001
 19CLC0
 1
 

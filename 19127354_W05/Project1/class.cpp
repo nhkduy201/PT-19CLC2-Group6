@@ -7,6 +7,8 @@ void createStudent(string filepath) {
 	string DoB;
 	string classID;
 	bool status;
+	int NumberOfStudent;
+	Student student[1000];
 
 	cout << "Student ID: ";
 	getline(cin, id);
@@ -22,23 +24,45 @@ void createStudent(string filepath) {
 	classID = filepath;
 	cout << "Status: ";
 	cin >> status;
-
-	ofstream file;
-	file.open("../../" + filepath + "-Student.txt", ios::app);
-	file << id << endl;
-	file << password << endl;
-	file << name << endl;
-	file << DoB << endl;
-	file << classID << endl;
-	file << status << endl;
-	file << endl;
-	file.close();
+	ifstream fin;
+	fin.open("../../" + filepath + "-Student.txt");
+	fin >> NumberOfStudent;
+	for (int i = 0; i < NumberOfStudent; i++) {
+		fin.ignore();
+		getline(fin, student[i].id);
+		getline(fin, student[i].password);
+		getline(fin, student[i].name);
+		getline(fin, student[i].DoB);
+		getline(fin, student[i].classID);
+		fin >> student[i].status;
+		fin.ignore();
+	}
+	NumberOfStudent += 1;
+	ofstream fout;
+	fout.open("../../" + filepath + "-Student.txt");
+	fout << NumberOfStudent << endl;
+	for (int i = 0; i < NumberOfStudent-1; i++) {
+		fout << student[i].id << endl;
+		fout << student[i].password << endl;
+		fout << student[i].name << endl;
+		fout << student[i].DoB << endl;
+		fout << student[i].classID << endl;
+		fout << student[i].status << endl;
+		fout << endl;
+	}
+	fout << id << endl;
+	fout << password << endl;
+	fout << name << endl;
+	fout << DoB << endl;
+	fout << classID << endl;
+	fout << status << endl;
+	fout << endl;
+	fout.close();
 	
 	Student std[1000];
 	ifstream in;
 	ofstream out;
 	in.open("../../Student.txt");
-	int NumberOfStudent;
 	in >> NumberOfStudent;
 	int temp = NumberOfStudent;
 	for (int i = 0; i < NumberOfStudent; i++) {
@@ -207,20 +231,24 @@ void editStudent(string filepath, Student student[]) {
 			switch (choose){
 			case 1: {
 				cin.ignore();
+				cout << "Input name: ";
 				getline(cin, student[i].name);
 				break; 
 			}
 			case 2: {
 				cin.ignore();
+				cout << "Input password: ";
 				getline(cin, student[i].password);
 				break;
 			}
 			case 3: {
 				cin.ignore();
+				cout << "Input DoB: ";
 				getline(cin, student[i].DoB);
 				break;
 			}
 			case 4: {
+				cout << "Input status: ";
 				cin >> student[i].status;
 				break;
 			}
