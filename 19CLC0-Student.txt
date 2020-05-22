@@ -1,4 +1,4 @@
-4
+3
 19127466
 01012001
 Dinh Hoa Lu
@@ -17,13 +17,6 @@ Nguyen Huynh Khanh Duy
 01032001
 Le Thanh Dat
 12 12 2001
-19CLC0
-1
-
-19127436
-01042001
-Tang Tuong Khang
-01 04 2001
 19CLC0
 1
 

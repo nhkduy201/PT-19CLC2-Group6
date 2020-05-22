@@ -8,17 +8,18 @@ void createStudent(string filepath) {
 	string classID;
 	bool status;
 
-	cin.ignore();
 	cout << "Student ID: ";
 	getline(cin, id);
-	cout << "Student password: ";
-	getline(cin, password);
 	cout << "Student name: ";
 	getline(cin, name);
-	cout << "Date of Birth: ";
+	cout << "Date of Birth (DD MM YYYY): ";
 	getline(cin, DoB);
-	cout << "ID of class: ";
-	getline(cin, classID);
+	cout << "Student password will be DDMMYYYY (DoB without space)" << endl;
+	string S = DoB;
+	S.erase(5, 1);
+	S.erase(2, 1);
+	password = S;
+	classID = filepath;
 	cout << "Status: ";
 	cin >> status;
 
@@ -32,14 +33,37 @@ void createStudent(string filepath) {
 	file << status << endl;
 	file << endl;
 	file.close();
+	
+	Student std[1000];
+	ifstream in;
+	ofstream out;
+	in.open("../../Student.txt");
+	int NumberOfStudent;
+	in >> NumberOfStudent;
+	int temp = NumberOfStudent;
+	for (int i = 0; i < NumberOfStudent; i++) {
+		in.ignore();
+		getline(in, std[i].id);
+		getline(in, std[i].password);
+		getline(in, std[i].name);
+		in >> std[i].status;
+	}
+	NumberOfStudent += 1;
+	out.open("../../Student.txt");
+	out << NumberOfStudent << endl;;
+	for (int i = 0; i < temp; i++) {
+		out << std[i].id << endl;
+		out << std[i].password << endl;
+		out << std[i].name << endl;
+		out << std[i].status << endl;
+	}
+	out << id << endl;
+	out << password << endl;
+	out << name << endl;
+	out << status << endl;
 
-	ofstream main;
-	main.open("../../Student.txt", ios::app);
-	main << id << endl;
-	main << password << endl;
-	main << name << endl;
-	main << status << endl;
-	main.close();
+	in.close();
+	out.close();
 }
 
 void removeStudent(string filepath, Student student[]) {
@@ -102,12 +126,10 @@ void removeStudent(string filepath, Student student[]) {
 		inMain >> NumberOfStudent;
 		for (int i = 0; i < NumberOfStudent; i++) {
 			inMain.ignore();
-			getline(fin, std[i].id);
-			getline(fin, std[i].password);
-			getline(fin, std[i].name);
-			fin >> std[i].status;
-			fin.ignore();
-		}
+			getline(inMain, std[i].id);
+			getline(inMain, std[i].password);
+			getline(inMain, std[i].name);
+			inMain >> std[i].status;		}
 	}
 	inMain.close();
 	i = 0;
@@ -318,7 +340,7 @@ void moveStudent(string filepath, Student student[])
 	}
 	else {
 		fin1 >> NumberOfStudent;
-		for (int i = 0; i < NumberOfStudent; i++) {
+		for (i = 0; i < NumberOfStudent; i++) {
 			fin1.ignore();
 			getline(fin1, student[i].id);
 			getline(fin1, student[i].password);
@@ -365,7 +387,6 @@ void moveStudent(string filepath, Student student[])
 	fout1.close();
 	string anotherClass;
 	cout << "Enter the class you want " << findingID << " to move to: ";
-	cin.ignore();
 	getline(cin, anotherClass);
 
 	ifstream fin2;
@@ -388,17 +409,13 @@ void moveStudent(string filepath, Student student[])
 	}
 	fin2.close();
 	NumberOfStudent = NumberOfStudent + 1;
-	for (i = 0; i < NumberOfStudent; i++) {
-		if (i == NumberOfStudent - 1) {
-			student[i].id = temp.id;
-			student[i].password = temp.password;
-			student[i].name = temp.name;
-			student[i].DoB = temp.DoB;
-			student[i].classID = temp.classID;
-			student[i].status = temp.status;
-		}
-	}
-
+	student[i].id = temp.id;
+	student[i].password = temp.password;
+	student[i].name = temp.name;
+	student[i].DoB = temp.DoB;
+	student[i].classID = temp.classID;
+	student[i].status = temp.status;
+	
 	ofstream fout2;
 	fout2.open("../../" + anotherClass + "-Student.txt");
 	fout2 << NumberOfStudent << endl;
@@ -420,6 +437,7 @@ void importStudent(ifstream& fin, Student& std)
 	fin.ignore();
 	getline(fin, std.id, ',');
 	getline(fin, std.name, ',');
+	getline(fin, std.gender, ',');
 	getline(fin, std.DoB, ',');
 	getline(fin, std.classID, '\n');
 }
@@ -437,20 +455,19 @@ void importCsv(string filepath, Student student[])
 		while (fin.good()) {
 			importStudent(fin, student[count]);
 			student[count].status = 1;
-
+			if (student[count].id.length() == 0)
+				break;
 			string S = student[count].DoB;
-			S.erase(S.begin() + 2);
-			S.erase(S.begin() + 4);
+			S.erase(5,1);
+			S.erase(2,1);
 			student[count].password = S;
-
 			S.insert(2, 1,' ');
 			S.insert(5, 1,' ');
 			student[count].DoB = S;
-
 			count += 1;
 		}
 		ofstream fout;
-		fout.open("../../" + filepath + "-Student.csv");
+		fout.open("../../" + filepath + "-Student.txt");
 		fout << count << endl;
 		for (int i = 0; i < count; i++) {
 			fout << student[i].id << endl;
@@ -461,10 +478,10 @@ void importCsv(string filepath, Student student[])
 			fout << student[i].status << endl;
 			fout << endl;
 		}
-		fout.close();
 
 		Student std[1000];
 		ifstream in;
+		ofstream out;
 		in.open("../../Student.txt");
 		int NumberOfStudent;
 		in >> NumberOfStudent;
@@ -477,22 +494,24 @@ void importCsv(string filepath, Student student[])
 			in >> std[i].status;
 		}
 		NumberOfStudent += count;
-		fout.open("../../Student.txt");
-		fout << NumberOfStudent;
+		out.open("../../Student.txt");
+		out << NumberOfStudent << endl;;
 		for (int i = 0; i < temp; i++) {
-			fout << std[i].id << endl;
-			fout << std[i].password << endl;
-			fout << std[i].name << endl;
-			fout << std[i].status << endl;
+			out << std[i].id << endl;
+			out << std[i].password << endl;
+			out << std[i].name << endl;
+			out << std[i].status << endl;
 		}
 		for (int i = 0; i < count; i++) {
-			fout << student[i].id << endl;
-			fout << student[i].password << endl;
-			fout << student[i].name << endl;
-			fout << student[i].status << endl;
+			out << student[i].id << endl;
+			out << student[i].password << endl;
+			out << student[i].name << endl;
+			out << student[i].status << endl;
 		}
 		in.close();
+		out.close();
 		fout.close();
+
 	}
 	fin.close();
 }
@@ -567,8 +586,6 @@ void classMenu()
 		moveStudent(classID, student);
 		break;
 	case 6:
-		cout << "Enter classID: ";
-		getline(cin, classID);
 		viewClasses(clas);
 		break;
 	case 7:
