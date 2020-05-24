@@ -563,7 +563,7 @@ void classMenu()
 	ClearPrintDelay();
 	int choose;
 
-	cout << "\n\t0. Exit" << endl;
+	cout << "\n\t0. Back" << endl;
 	cout << "\t1. Import Csv" << endl;
 	cout << "\t2. Add new student" << endl;
 	cout << "\t3. Edit a student" << endl;
@@ -578,8 +578,8 @@ void classMenu()
 	{
 		cin.clear();
 		cin.ignore(32767, '\n');
-		ClearPrintDelay("Your choice is illegal. Try again.");
-		cout << "\n\t0. Exit" << endl;
+		ClearPrintDelay("\n\tYour choice is illegal. Try again.");
+		cout << "\n\t0. Back" << endl;
 		cout << "\t1. Import Csv" << endl;
 		cout << "\t2. Add new student" << endl;
 		cout << "\t3. Edit a student" << endl;
@@ -588,6 +588,7 @@ void classMenu()
 		cout << "\t6. View list of classes" << endl;
 		cout << "\t7. View students of a class\n" << endl;
 		cout << "\tEnter  your choice: ";
+		cin >> choose;
 	}
 
 	cout << endl;

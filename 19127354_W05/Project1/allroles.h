@@ -6,6 +6,8 @@
 #include<fstream>
 #include<Windows.h>
 using namespace std;
+
+// allroles
 struct DateOfBirth {
 	string day, month, year;
 };
@@ -19,7 +21,14 @@ struct User {
 	int pos;
 	bool active = true;
 };
-
+void MainMenu();
+void Login();
+bool CheckLogin(string rolepath, User* user, bool& isWrongPw);
+void UserMenu(User& user);
+void ClearPrintDelay(string message);
+void ClearPrintDelay();
+void ViewProfile(User user);
+// staff class
 struct Student {
 	int No;
 	string id;
@@ -30,23 +39,11 @@ struct Student {
 	string classID;
 	bool status;
 };
-
 struct Class {
 	string classID;
 };
-
-void MainMenu();
-void Login();
-bool CheckLogin(string rolepath, User* user, bool& isWrongPw);
-void UserMenu(User& user);
-void ClearPrintDelay(string message);
-void ClearPrintDelay();
-void ViewProfile(User user);
 void removeStudent(string filepath, Student student[]);
 void createStudent(string filepath);
-void editStudent(string filepath, Student student[]);
-void createStudent(string filepath);
-void removeStudent(string filepath, Student student[]);
 void editStudent(string filepath, Student student[]);
 void viewStudents(string filepath, Student student[]);
 void viewClasses(Class a[]);

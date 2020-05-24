@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="allroles.cpp" />
     <ClCompile Include="class.cpp" />
+    <ClCompile Include="course.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
