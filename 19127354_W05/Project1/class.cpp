@@ -185,7 +185,7 @@ void removeStudent(string filepath, Student student[]) {
 		outMain << std[i].status << endl;
 	}
 	outMain.close();
-	ClearPrintDelay("Remove successfully!");
+	ClearPrintDelay("\n\tRemove successfully!");
 }
 
 void editStudent(string filepath, Student student[]) {
@@ -543,7 +543,7 @@ void importCsv(string filepath, Student student[])
 		}
 		NumberOfStudent += count;
 		out.open("../../Student.txt");
-		out << NumberOfStudent << endl;;
+		out << NumberOfStudent << endl;
 		for (int i = 0; i < temp; i++) {
 			out << std[i].id << endl;
 			out << std[i].password << endl;
@@ -551,11 +551,12 @@ void importCsv(string filepath, Student student[])
 			out << std[i].classID << endl;
 			out << std[i].status << endl;
 		}
+
 		for (int i = 0; i < count; i++) {
 			out << student[i].id << endl;
 			out << student[i].password << endl;
 			out << student[i].name << endl;
-			out << std[i].classID << endl;
+			out << student[i].classID << endl;
 			out << student[i].status << endl;
 		}
 		in.close();
@@ -609,7 +610,6 @@ void changePassInClass(string filepath, string findingID, string newPassword) {
 		fout << endl;
 	}
 	fout.close();
-	ClearPrintDelay("\n\tChange in class successfully!");
 }
 
 void classMenu()

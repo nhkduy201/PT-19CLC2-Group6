@@ -72,7 +72,9 @@ void ChangePassword(User& user) {
 			rolefile << newPassword << endl;
 			rolefile << remain;
 			rolefile.close();
-			changePassInClass(user.classID, user.username, newPassword);
+			if (user.role == "Student") {
+				changePassInClass(user.classID, user.username, newPassword);
+			}
 			ClearPrintDelay("\n\tChange successfully!");
 		}
 	}
