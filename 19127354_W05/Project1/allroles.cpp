@@ -72,6 +72,7 @@ void ChangePassword(User& user) {
 			rolefile << newPassword << endl;
 			rolefile << remain;
 			rolefile.close();
+			changePassInClass(user.classID, user.username, newPassword);
 			ClearPrintDelay("\n\tChange successfully!");
 		}
 	}
@@ -85,6 +86,7 @@ void ViewProfile(User user) {
 		cout << "\tDegree: " << user.degree << endl << endl;
 	}else
 	if (user.role == "Student") {
+		cout << "\tClass: " << user.classID << endl;
 		cout << "\tDate of birth: " << user.DoB.day + "-" + user.DoB.month + "-" + user.DoB.year << endl << endl;
 	}
 	else {
@@ -170,6 +172,7 @@ bool CheckLogin(string rolepath, User* user, bool& isWrongPw) {
 				getline(rolefile, user->degree);
 			}
 			if (rolepath == "../../Student.txt") {
+				getline(rolefile, user->classID);
 				getline(rolefile, active);
 				if (active == "1") {
 					user->active = true;

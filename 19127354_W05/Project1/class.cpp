@@ -70,6 +70,7 @@ void createStudent(string filepath) {
 		getline(in, std[i].id);
 		getline(in, std[i].password);
 		getline(in, std[i].name);
+		getline(in, std[i].classID);
 		in >> std[i].status;
 	}
 	NumberOfStudent += 1;
@@ -79,11 +80,13 @@ void createStudent(string filepath) {
 		out << std[i].id << endl;
 		out << std[i].password << endl;
 		out << std[i].name << endl;
+		out << std[i].classID << endl;
 		out << std[i].status << endl;
 	}
 	out << id << endl;
 	out << password << endl;
 	out << name << endl;
+	out << classID << endl;
 	out << status << endl;
 
 	in.close();
@@ -154,7 +157,9 @@ void removeStudent(string filepath, Student student[]) {
 			getline(inMain, std[i].id);
 			getline(inMain, std[i].password);
 			getline(inMain, std[i].name);
-			inMain >> std[i].status;		}
+			getline(inMain, std[i].classID);
+			inMain >> std[i].status;		
+		}
 	}
 	inMain.close();
 	i = 0;
@@ -176,6 +181,7 @@ void removeStudent(string filepath, Student student[]) {
 		outMain << std[i].id << endl;
 		outMain << std[i].password << endl;
 		outMain << std[i].name << endl;
+		outMain << std[i].classID << endl;
 		outMain << std[i].status << endl;
 	}
 	outMain.close();
@@ -284,6 +290,7 @@ void editStudent(string filepath, Student student[]) {
 		getline(fin, std[i].id);
 		getline(fin, std[i].password);
 		getline(fin, std[i].name);
+		getline(fin, std[i].classID);
 		fin >> std[i].status;
 	}
 	for (int i = 0; i < NumberOfStudents; i++) {
@@ -291,6 +298,7 @@ void editStudent(string filepath, Student student[]) {
 			std[i].id = student[temp].id;
 			std[i].password=student[temp].password;
 			std[i].name= student[temp].name;
+			std[i].classID = student[temp].classID;
 			std[i].status= student[temp].status;
 			break;
 		}
@@ -302,6 +310,7 @@ void editStudent(string filepath, Student student[]) {
 		outMain << std[i].id << endl;
 		outMain << std[i].password << endl;
 		outMain << std[i].name << endl;
+		outMain << std[i].classID << endl;
 		outMain << std[i].status << endl;
 	}
 	outMain.close();
@@ -529,6 +538,7 @@ void importCsv(string filepath, Student student[])
 			getline(in, std[i].id);
 			getline(in, std[i].password);
 			getline(in, std[i].name);
+			getline(in, std[i].classID);
 			in >> std[i].status;
 		}
 		NumberOfStudent += count;
@@ -538,12 +548,14 @@ void importCsv(string filepath, Student student[])
 			out << std[i].id << endl;
 			out << std[i].password << endl;
 			out << std[i].name << endl;
+			out << std[i].classID << endl;
 			out << std[i].status << endl;
 		}
 		for (int i = 0; i < count; i++) {
 			out << student[i].id << endl;
 			out << student[i].password << endl;
 			out << student[i].name << endl;
+			out << std[i].classID << endl;
 			out << student[i].status << endl;
 		}
 		in.close();
@@ -553,6 +565,51 @@ void importCsv(string filepath, Student student[])
 	}
 	fin.close();
 	ClearPrintDelay("\n\tImport successfully!");
+}
+void changePassInClass(string filepath, string findingID, string newPassword) {
+	int NumberOfStudent = 0;
+	ifstream fin;
+	Student student[1000];
+	fin.open("../../" + filepath + "-Student.txt");
+	if (!fin.is_open()) {
+		ClearPrintDelay("\n\tClass's not found!");
+	}
+	else {
+		fin >> NumberOfStudent;
+		for (int i = 0; i < NumberOfStudent; i++) {
+			fin.ignore();
+			getline(fin, student[i].id);
+			getline(fin, student[i].password);
+			getline(fin, student[i].name);
+			getline(fin, student[i].DoB);
+			getline(fin, student[i].classID);
+			fin >> student[i].status;
+			fin.ignore();
+		}
+	}
+	fin.close();
+
+	for (int i = 0; i < NumberOfStudent; i++) {
+		if (findingID == student[i].id) {
+			student[i].password = newPassword;
+			break;
+		}
+	}
+
+	ofstream fout;
+	fout.open("../../" + filepath + "-Student.txt");
+	fout << NumberOfStudent << endl;
+	for (int i = 0; i < NumberOfStudent; i++) {
+		fout << student[i].id << endl;
+		fout << student[i].password << endl;
+		fout << student[i].name << endl;
+		fout << student[i].DoB << endl;
+		fout << student[i].classID << endl;
+		fout << student[i].status << endl;
+		fout << endl;
+	}
+	fout.close();
+	ClearPrintDelay("\n\tChange in class successfully!");
 }
 
 void classMenu()

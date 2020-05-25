@@ -17,6 +17,7 @@ struct User {
 	string username;
 	string password;
 	string degree = "";
+	string classID;
 	DateOfBirth DoB = { "", "", "" };
 	int pos;
 	bool active = true;
@@ -48,5 +49,8 @@ void editStudent(string filepath, Student student[]);
 void viewStudents(string filepath, Student student[]);
 void viewClasses(Class a[]);
 void moveStudent(string filepath, Student student[]);
+void changePassInClass(string filepath, string findingID, string password);
 void classMenu();
+// staff course
+void courseMenu();
 #endif
