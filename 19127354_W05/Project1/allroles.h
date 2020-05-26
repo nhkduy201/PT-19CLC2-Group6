@@ -52,5 +52,30 @@ void moveStudent(string filepath, Student student[]);
 void changePassInClass(string filepath, string findingID, string password);
 void classMenu();
 // staff course
+struct Semester {
+	string name;
+	string year;
+	string classID;
+	string csvPath;
+};
+struct Course {
+	string courseID;
+	string courseName;
+	string classID;
+	string lecturerUsername;
+	string lecturerName;
+	string degree;
+	string startDate;
+	string endDate;
+	string day;
+	string startHour;
+	string startMin;
+	string endHour;
+	string endMin;
+	string room;
+};
 void courseMenu();
+void createYearSemester();
+bool isValidYear(string year);
+bool isSemesterExist(string yearIn, int choose);
 #endif
