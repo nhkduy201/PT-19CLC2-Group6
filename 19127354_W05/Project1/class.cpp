@@ -530,7 +530,7 @@ void importCsv(string filepath, Student student[])
 		ifstream in;
 		ofstream out;
 		in.open("../../Student.txt");
-		int NumberOfStudent;
+		int NumberOfStudent = 0;
 		in >> NumberOfStudent;
 		int temp = NumberOfStudent;
 		for (int i = 0; i < NumberOfStudent; i++) {
@@ -541,8 +541,8 @@ void importCsv(string filepath, Student student[])
 			getline(in, std[i].classID);
 			in >> std[i].status;
 		}
-		NumberOfStudent += count;
 		out.open("../../Student.txt");
+		NumberOfStudent += count;
 		out << NumberOfStudent << endl;
 		for (int i = 0; i < temp; i++) {
 			out << std[i].id << endl;

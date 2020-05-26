@@ -1,26 +1,6 @@
-12
-19127466
-01012001
-Dinh Hoa Lu
-19CLC0
-1
-19127377
-sainuanghi
-Nguyen Huynh Khanh Duy
-19CLC0
-1
-19127354
-03032001
-Le Thanh Dat
-19CLC0
-1
-19127436
-01042001
-Tang Tuong Khang
-19CLC0
-1
+8
 19127001
-nvteo2001
+29012001
 Nguyen Van Teo
 19CLC1
 1
@@ -40,22 +20,22 @@ I Love You 3000
 19CLC1
 1
 19127015
-21122001
-Nguyen Van Ti
+01022001
+Dinh Hoa Lu
 19CLC2
 1
 19127016
-12052001
-Bong Van Tanh
+02012001
+Nguyen Huynh Khanh Duy
 19CLC2
 1
 19127017
-13092001
-Doan Thi Chung
+01032001
+Le Thanh Dat
 19CLC2
 1
 19127018
-20102001
-Hellooooooo
+03012001
+Tang Tuong Khang
 19CLC2
 1
