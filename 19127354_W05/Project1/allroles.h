@@ -78,4 +78,6 @@ void courseMenu();
 void createYearSemester();
 bool isValidYear(string year);
 bool isSemesterExist(string yearIn, int choose);
+void importSchedule();
+void standardPathFile(string& path);
 #endif
