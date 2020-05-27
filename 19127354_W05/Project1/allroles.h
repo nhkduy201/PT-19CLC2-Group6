@@ -43,12 +43,12 @@ struct Student {
 struct Class {
 	string classID;
 };
-void removeStudent(string filepath, Student student[]);
+void removeStudent(string filepath);
 void createStudent(string filepath);
-void editStudent(string filepath, Student student[]);
-void viewStudents(string filepath, Student student[]);
-void viewClasses(Class a[]);
-void moveStudent(string filepath, Student student[]);
+void editStudent(string filepath);
+void viewStudents(string filepath);
+void viewClasses();
+void moveStudent(string filepath);
 void changePassInClass(string filepath, string findingID, string password);
 void classMenu();
 // staff course
