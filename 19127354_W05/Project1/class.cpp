@@ -8,7 +8,7 @@ void createStudent(string filepath) {
 	string classID;
 	bool status;
 	int NumberOfStudent;
-	Student student[1000];
+	Student *student= new Student[1000];
 
 	cout << "\tStudent ID: ";
 	getline(cin, id);
@@ -24,6 +24,7 @@ void createStudent(string filepath) {
 	classID = filepath;
 	cout << "\tStatus: ";
 	cin >> status;
+
 	ifstream fin;
 	fin.open("../../" + filepath + "-Student.txt");
 	fin >> NumberOfStudent;
@@ -59,7 +60,7 @@ void createStudent(string filepath) {
 	fout << endl;
 	fout.close();
 	
-	Student std[1000];
+	Student *std=new Student[10000];
 	ifstream in;
 	ofstream out;
 	in.open("../../Student.txt");
@@ -92,11 +93,14 @@ void createStudent(string filepath) {
 	in.close();
 	out.close();
 	ClearPrintDelay("\n\tCreate successfully!");
+	delete[] student;
+	delete[] std;
 }
 
-void removeStudent(string filepath, Student student[]) {
+void removeStudent(string filepath) {
 	int NumberOfStudent = 0;
 	string findingID;
+	Student* student = new Student[1000];
 	ifstream fin;
 	fin.open("../../" + filepath + "-Student.txt");
 	if (!fin.is_open()) {
@@ -144,7 +148,7 @@ void removeStudent(string filepath, Student student[]) {
 	}
 	fout.close();
 
-	Student std[1000];
+	Student* std = new Student[10000];
 
 	ifstream inMain;
 	inMain.open("../../Student.txt");
@@ -186,11 +190,14 @@ void removeStudent(string filepath, Student student[]) {
 	}
 	outMain.close();
 	ClearPrintDelay("\n\tRemove successfully!");
+	delete[] student;
+	delete[] std;
 }
 
-void editStudent(string filepath, Student student[]) {
+void editStudent(string filepath) {
 	int NumberOfStudent = 0;
 	string findingID;
+	Student* student = new Student[1000];
 	ifstream fin;
 	fin.open("../../" + filepath + "-Student.txt");
 	if (!fin.is_open()) {
@@ -281,7 +288,7 @@ void editStudent(string filepath, Student student[]) {
 	}
 	fout.close();
 	
-	Student std[1000];
+	Student* std = new Student[10000];
 	fin.open("../../Student.txt");
 	int NumberOfStudents;
 	fin >> NumberOfStudents;
@@ -315,10 +322,14 @@ void editStudent(string filepath, Student student[]) {
 	}
 	outMain.close();
 	ClearPrintDelay("\n\tEdit successfully!");
+	delete[] student;
+	delete[] std;
 }
 
-void viewStudents(string filepath, Student student[]) {
+void viewStudents(string filepath) {
 	int NumberOfStudent = 0;
+	Student* student = new Student[10000];
+
 	ifstream fin;
 	fin.open("../../" + filepath + "-Student.txt");
 	if (!fin.is_open()) {
@@ -349,11 +360,13 @@ void viewStudents(string filepath, Student student[]) {
 		cout << "\t" << student[i].status << endl;
 		cout << endl;
 	}
+	delete[] student;
 	system("pause");
 }
 
-void viewClasses(Class a[]) {
+void viewClasses() {
 	int NumberOfClass = 0;
+	Class* a = new Class[1000]; 
 	ifstream fin;
 	fin.open("../../Class.txt");
 	if (!fin.is_open()) {
@@ -370,15 +383,17 @@ void viewClasses(Class a[]) {
 	for (int i = 0; i < NumberOfClass; i++) {
 		cout << "\t" << a[i].classID << endl;
 	}
+	delete[] a;
 	system("pause");
 }
 
-void moveStudent(string filepath, Student student[])
+void moveStudent(string filepath)
 {
 	string findingID;
 	Student temp;
 	int NumberOfStudent = 0;
 	int i;
+	Student* student = new Student;
 	ifstream fin1;
 	fin1.open("../../" + filepath + "-Student.txt");
 	if (!fin1.is_open()) {
@@ -400,6 +415,7 @@ void moveStudent(string filepath, Student student[])
 	fin1.close();
 	cout << "\tInput Student ID you want to move: ";
 	getline(cin, findingID);
+
 
 	for (i = 0; i < NumberOfStudent; i++) {
 		if (findingID == student[i].id) {
@@ -476,6 +492,7 @@ void moveStudent(string filepath, Student student[])
 	}
 	fout2.close();
 	ClearPrintDelay("\n\tMove successfully!");
+	delete[] student;
 }
 
 void importStudent(ifstream& fin, Student& std)
@@ -489,8 +506,9 @@ void importStudent(ifstream& fin, Student& std)
 	getline(fin, std.classID, '\n');
 }
 
-void importCsv(string filepath, Student student[])
+void importCsv(string filepath)
 {
+	Student* student = new Student[1000];
 	ifstream fin;
 	fin.open("../../" + filepath + "-Student.csv");
 	if (!fin.is_open())
@@ -526,7 +544,7 @@ void importCsv(string filepath, Student student[])
 			fout << endl;
 		}
 
-		Student std[1000];
+		Student* std = new Student[10000];
 		ifstream in;
 		ofstream out;
 		in.open("../../Student.txt");
@@ -559,6 +577,7 @@ void importCsv(string filepath, Student student[])
 			out << student[i].classID << endl;
 			out << student[i].status << endl;
 		}
+		delete[] std;
 		in.close();
 		out.close();
 		fout.close();
@@ -566,11 +585,12 @@ void importCsv(string filepath, Student student[])
 	}
 	fin.close();
 	ClearPrintDelay("\n\tImport successfully!");
+	delete[] student;
 }
 void changePassInClass(string filepath, string findingID, string newPassword) {
 	int NumberOfStudent = 0;
 	ifstream fin;
-	Student student[1000];
+	Student* student= new Student[1000];
 	fin.open("../../" + filepath + "-Student.txt");
 	if (!fin.is_open()) {
 		ClearPrintDelay("\n\tClass's not found!");
@@ -610,12 +630,11 @@ void changePassInClass(string filepath, string findingID, string newPassword) {
 		fout << endl;
 	}
 	fout.close();
+	delete[] student;
 }
 
 void classMenu()
 {
-	Class clas[100];
-	Student student[1000];
 	string classID;
 	ClearPrintDelay();
 	int choose;
@@ -658,7 +677,7 @@ void classMenu()
 	case 1:
 		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
-		importCsv(classID, student);
+		importCsv(classID);
 		break;
 	case 2:
 		cout << "\n\tEnter classID: ";
@@ -668,25 +687,25 @@ void classMenu()
 	case 3:
 		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
-		editStudent(classID, student);
+		editStudent(classID);
 		break;
 	case 4:
 		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
-		removeStudent(classID, student);
+		removeStudent(classID);
 		break;
 	case 5:
 		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
-		moveStudent(classID, student);
+		moveStudent(classID);
 		break;
 	case 6:
-		viewClasses(clas);
+		viewClasses();
 		break;
 	case 7:
 		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
-		viewStudents(classID, student);
+		viewStudents(classID);
 		break;
 	}
 }
