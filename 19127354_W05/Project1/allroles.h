@@ -58,6 +58,10 @@ struct Semester {
 	string classID;
 	string csvPath;
 };
+struct AttendanceTime {
+	int numOfWeek;
+	string* listOfWeekTime;
+};
 struct Course {
 	string courseID;
 	string courseName;
@@ -74,10 +78,6 @@ struct Course {
 	string endHour;
 	string endMin;
 	string room;
-};
-struct AttendanceTime {
-	int numOfWeek;
-	string* listOfWeekTime;
 };
 struct Scoreboard {
 	double midterm = -1;
