@@ -70,9 +70,25 @@ struct Course {
 	string day;
 	string startHour;
 	string startMin;
+	AttendanceTime atd;
 	string endHour;
 	string endMin;
 	string room;
+};
+struct AttendanceTime {
+	int numOfWeek;
+	string* listOfWeekTime;
+};
+struct Scoreboard {
+	double midterm = -1;
+	double final = -1;
+	double bobus = -1;
+	double total = -1;
+};
+struct StudentInCourse {
+	Student std;
+	Scoreboard scb;
+	bool* listOfCheckIn;
 };
 void courseMenu();
 void createYearSemester();
