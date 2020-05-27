@@ -218,37 +218,47 @@ void importSchedule() {
 	else {
 		int count = 0;
 		string fisrtline;
-		Course cour[50];
+		Course* cour;
 		string no;
 		getline(fin, fisrtline);
 		while (fin.good()) {
+			getline(fin, no, '\n');
+			if (!no.length()) {
+				break;
+			}
+			count++;
+		}
+		cour = new Course[count];
+		fin.close();
+		fin.open(sem.csvPath);
+		getline(fin, fisrtline);
+		for (int i = 0; i < count; i++) {
 			getline(fin, no, ',');
 			if (!no.length()) {
 				break;
 			}
-			getline(fin, cour[count].courseID, ',');
-			getline(fin, cour[count].courseName, ',');
-			getline(fin, cour[count].classID, ',');
-			getline(fin, cour[count].lecturerUsername, ',');
-			getline(fin, cour[count].lecturerName, ',');
-			getline(fin, cour[count].degree, ',');
-			getline(fin, cour[count].startDate, ',');
-			getline(fin, cour[count].endDate, ',');
-			getline(fin, cour[count].day, ',');
-			getline(fin, cour[count].startHour, ',');
-			getline(fin, cour[count].endHour, ',');
-			getline(fin, cour[count].startMin, ',');
-			getline(fin, cour[count].endMin, ',');
-			getline(fin, cour[count].room, '\n');
-			cour[count].startDate.erase(5, 1);
-			cour[count].startDate.erase(2, 1);
-			cour[count].startDate.insert(2, 1, ' ');
-			cour[count].startDate.insert(5, 1, ' ');
-			cour[count].endDate.erase(5, 1);
-			cour[count].endDate.erase(2, 1);
-			cour[count].endDate.insert(2, 1, ' ');
-			cour[count].endDate.insert(5, 1, ' ');
-			count++;
+			getline(fin, cour[i].courseID, ',');
+			getline(fin, cour[i].courseName, ',');
+			getline(fin, cour[i].classID, ',');
+			getline(fin, cour[i].lecturerUsername, ',');
+			getline(fin, cour[i].lecturerName, ',');
+			getline(fin, cour[i].degree, ',');
+			getline(fin, cour[i].startDate, ',');
+			getline(fin, cour[i].endDate, ',');
+			getline(fin, cour[i].day, ',');
+			getline(fin, cour[i].startHour, ',');
+			getline(fin, cour[i].endHour, ',');
+			getline(fin, cour[i].startMin, ',');
+			getline(fin, cour[i].endMin, ',');
+			getline(fin, cour[i].room, '\n');
+			cour[i].startDate.erase(5, 1);
+			cour[i].startDate.erase(2, 1);
+			cour[i].startDate.insert(2, 1, ' ');
+			cour[i].startDate.insert(5, 1, ' ');
+			cour[i].endDate.erase(5, 1);
+			cour[i].endDate.erase(2, 1);
+			cour[i].endDate.insert(2, 1, ' ');
+			cour[i].endDate.insert(5, 1, ' ');
 		}
 		ofstream fout;
 		fout.open("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-Schedule.txt");
