@@ -277,6 +277,7 @@ void importSchedule() {
 			fout << cour[i].startMin << " " << cour[i].endMin << endl;
 			fout << cour[i].room << endl;
 		}
+		delete[] cour;
 		fout.close();
 	}
 	fin.close();
