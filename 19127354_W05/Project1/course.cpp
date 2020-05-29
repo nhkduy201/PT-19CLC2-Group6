@@ -141,6 +141,90 @@ void standardPathFile(string &path) {
 	}
 }
 
+void getDayOfWeek(Date& date) {
+	int numberOfDay = 0;
+	int daysOfMonth[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	//string dayOfWeek[7] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" , "Sunday" };
+	for (int i = 1970; i < date.year; i++) {
+		if (((i % 4 == 0) && (i % 100 != 0)) || (i % 400 == 0)) {
+			numberOfDay += 366;
+		}
+		else {
+			numberOfDay += 365;
+		}
+	}
+	if (((date.year % 4 == 0) && (date.year % 100 != 0)) || (date.year % 400 == 0)) {
+		daysOfMonth[1] = 29;
+	}
+	for (int i = 0; i < date.month - 1; i++) {
+		numberOfDay += daysOfMonth[i];
+	}
+	numberOfDay += date.day;
+	date.dayFromTheOrigin = numberOfDay;
+	numberOfDay = (numberOfDay % 7 + 2) % 7;
+	date.DOW = numberOfDay;
+}
+void getDate(Date& date, int dayFromTheOrigin) {
+	int countYear = 1970;
+	int dayOfYear;
+	int daysOfMonth[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	//string dayOfWeek[7] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" , "Sunday" };
+	while (true) {
+		if (((countYear % 4 == 0) && (countYear % 100 != 0)) || (countYear % 400 == 0)) {
+			dayOfYear = 366;
+		}
+		else {
+			dayOfYear = 365;
+		}
+		if (dayFromTheOrigin <= dayOfYear) {
+			break;
+		}
+		else {
+			dayFromTheOrigin -= dayOfYear;
+		}
+		countYear++;
+	}
+	date.year = countYear;
+	if (((countYear % 4 == 0) && (countYear % 100 != 0)) || (countYear % 400 == 0)) {
+		daysOfMonth[1] = 29;
+	}
+	for (int i = 0; i < 12; i++) {
+		if (dayFromTheOrigin - daysOfMonth[i] < 0) {
+			date.month = i + 1;
+			break;
+		}
+		dayFromTheOrigin -= daysOfMonth[i];
+	}
+	date.day = dayFromTheOrigin;
+}
+void getListOfWeek(Attendance& list, Date& start, Date& end, int theDay) {
+	Date tmpDate;
+	getDayOfWeek(start);
+	getDayOfWeek(end);
+	int dayStart, dayEnd, count = 0;
+	//Date startWeek, endWeek;
+	if (start.DOW > theDay) {
+		dayStart = start.dayFromTheOrigin + (6 - start.DOW) + theDay + 1;
+	}
+	else {
+		dayStart = start.dayFromTheOrigin + (theDay - start.DOW);
+	}
+	if (end.DOW < theDay) {
+		dayEnd = end.dayFromTheOrigin - end.DOW - (6 - theDay) - 1;
+	}
+	else {
+		dayEnd = end.dayFromTheOrigin + (theDay - end.DOW);
+	}
+	//getDate(startWeek, dayStart);
+	//getDate(endWeek, dayEnd);
+	list.numberOfWeek = (dayEnd - dayStart) / 7 + 1;
+	list.listOfWeek = new Date[list.numberOfWeek];
+	for (int i = dayStart; i <= dayEnd; i += 7) {
+		getDate(tmpDate, i);
+		list.listOfWeek[count++] = tmpDate;
+	}
+}
+
 void importSchedule() {
 	ClearPrintDelay();
 	Semester sem;
@@ -219,7 +303,7 @@ void importSchedule() {
 		int count = 0;
 		string fisrtline;
 		Course* cour;
-		string no;
+		string no, tmpDay;
 		getline(fin, fisrtline);
 		while (fin.good()) {
 			getline(fin, no, '\n');
@@ -243,22 +327,50 @@ void importSchedule() {
 			getline(fin, cour[i].lecturerUsername, ',');
 			getline(fin, cour[i].lecturerName, ',');
 			getline(fin, cour[i].degree, ',');
-			getline(fin, cour[i].startDate, ',');
-			getline(fin, cour[i].endDate, ',');
-			getline(fin, cour[i].day, ',');
-			getline(fin, cour[i].startHour, ',');
-			getline(fin, cour[i].endHour, ',');
-			getline(fin, cour[i].startMin, ',');
-			getline(fin, cour[i].endMin, ',');
+			fin >> cour[i].startDate.day;
+			fin.ignore();
+			fin >> cour[i].startDate.month;
+			fin.ignore();
+			fin >> cour[i].startDate.year;
+			fin.ignore();
+			fin >> cour[i].endDate.day;
+			fin.ignore();
+			fin >> cour[i].endDate.month;
+			fin.ignore();
+			fin >> cour[i].endDate.year;
+			fin.ignore();
+			getline(fin, tmpDay, ',');
+			if (tmpDay == "MON") {
+				cour[i].day = 0;
+			}
+			else if (tmpDay == "TUE") {
+				cour[i].day = 1;
+			}
+			else if (tmpDay == "WED") {
+				cour[i].day = 2;
+			}
+			else if (tmpDay == "THU") {
+				cour[i].day = 3;
+			}
+			else if (tmpDay == "FRI") {
+				cour[i].day = 4;
+			}
+			else if (tmpDay == "SAT") {
+				cour[i].day = 5;
+			}
+			else if (tmpDay == "SUN") {
+				cour[i].day = 6;
+			}
+			getListOfWeek(cour[i].atd, cour[i].startDate, cour[i].endDate, cour[i].day);
+			fin >> cour[i].startHour;
+			fin.ignore();
+			fin >> cour[i].endHour;
+			fin.ignore();
+			fin >> cour[i].startMin;
+			fin.ignore();
+			fin >> cour[i].endMin;
+			fin.ignore();
 			getline(fin, cour[i].room, '\n');
-			cour[i].startDate.erase(5, 1);
-			cour[i].startDate.erase(2, 1);
-			cour[i].startDate.insert(2, 1, ' ');
-			cour[i].startDate.insert(5, 1, ' ');
-			cour[i].endDate.erase(5, 1);
-			cour[i].endDate.erase(2, 1);
-			cour[i].endDate.insert(2, 1, ' ');
-			cour[i].endDate.insert(5, 1, ' ');
 		}
 		ofstream fout;
 		fout.open("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-Schedule.txt");
@@ -270,12 +382,63 @@ void importSchedule() {
 			fout << cour[i].lecturerUsername << endl;
 			fout << cour[i].lecturerName << endl;
 			fout << cour[i].degree << endl;
-			fout << cour[i].startDate << endl;
-			fout << cour[i].endDate << endl;
+			fout << cour[i].startDate.day << " " << cour[i].startDate.month << " " << cour[i].startDate.year << endl;
+			fout << cour[i].endDate.day << " " << cour[i].endDate.month << " " << cour[i].endDate.year << endl;
 			fout << cour[i].day << endl;
 			fout << cour[i].startHour << " " << cour[i].endHour << endl;
 			fout << cour[i].startMin << " " << cour[i].endMin << endl;
 			fout << cour[i].room << endl;
+		}
+		for (int i = 0; i < count; i++) {
+			//get class students
+			int NumberOfStudent = 0;
+			StudentInCourse* studentInCour = nullptr;
+			ifstream studentFile("../../" + sem.classID + "-Student.txt");
+			if (!studentFile.is_open()) {
+				ClearPrintDelay("\n\tClass " + sem.classID + " not found");
+				return;
+			}
+			studentFile >> NumberOfStudent;
+			studentInCour = new StudentInCourse[NumberOfStudent];
+			for (int j = 0; j < NumberOfStudent; j++) {
+				studentFile.ignore();
+				getline(studentFile, studentInCour[j].std.id);
+				getline(studentFile, studentInCour[j].std.password);
+				getline(studentFile, studentInCour[j].std.name);
+				getline(studentFile, studentInCour[j].std.DoB);
+				getline(studentFile, studentInCour[j].std.classID);
+				studentFile >> studentInCour[j].std.status;
+				studentInCour[j].scb.midterm = -1;
+				studentInCour[j].scb.final = -1;
+				studentInCour[j].scb.bobus = -1;
+				studentInCour[j].scb.total = -1;
+				studentInCour[j].listOfCheckIn = new bool[cour[i].atd.numberOfWeek];
+				for (int k = 0; k < cour[i].atd.numberOfWeek; k++) {
+					studentInCour[j].listOfCheckIn[k] = true;
+				}
+				studentInCour[j].statusInCourse = 1;
+			}
+			studentFile.close();
+			//write to class course
+			ofstream courseFile("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-" + cour[i].courseID + "-Student.txt");
+			courseFile << NumberOfStudent << endl;
+			for (int i = 0; i < NumberOfStudent; i++) {
+				courseFile << studentInCour[i].std.id << endl;
+				courseFile << studentInCour[i].std.password << endl;
+				courseFile << studentInCour[i].std.name << endl;
+				courseFile << studentInCour[i].std.DoB << endl;
+				courseFile << studentInCour[i].std.classID << endl;
+				courseFile << studentInCour[i].std.status << endl;
+				courseFile << studentInCour[i].scb.midterm << endl;
+				courseFile << studentInCour[i].scb.final << endl;
+				courseFile << studentInCour[i].scb.bobus << endl;
+				courseFile << studentInCour[i].scb.total << endl;
+				for (int k = 0; k < cour[i].atd.numberOfWeek; k++) {
+					courseFile << studentInCour[i].listOfCheckIn[k] << endl;
+				}
+				courseFile << studentInCour[i].statusInCourse << endl;
+			}
+			delete[] studentInCour;
 		}
 		delete[] cour;
 		fout.close();
