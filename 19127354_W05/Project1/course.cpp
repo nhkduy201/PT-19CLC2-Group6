@@ -71,13 +71,13 @@ void createYearSemester() {
 		cin.ignore(32767, '\n');
 		string err = "";
 		if (!isValidYear(year)) {
-			err += "\n\tThe academic year you type is illegal!";
+			err += "\n\n\tThe academic year you type is illegal!";
 		}
 		else if (isSemesterExist(year, choose)) {
-			err += "\n\tThe academic year and semester you type have been existed!";
+			err += "\n\n\tThe academic year and semester you type have been existed!";
 		}
 		if (choose < 1 || choose > 3 || cin.fail()) {
-			err += "\n\tYour choice is illegal!";
+			err += "\n\n\tYour choice is illegal!";
 		}
 		if (err.length()) {
 			ClearPrintDelay(err);
@@ -131,6 +131,7 @@ void createYearSemester() {
 		semFileOut << year + "\n";
 		semFileOut << semester;
 	}
+	ClearPrintDelay("\n\tCreate successfully!");
  }
 
 void standardPathFile(string &path) {
@@ -225,6 +226,18 @@ void getListOfWeek(Attendance& list, Date& start, Date& end, int theDay) {
 	}
 }
 
+bool isValidClass(string classID) {
+	ifstream classFile("../../Class.txt");
+	string tmpClassID;
+	while(!classFile.eof()) {
+		getline(classFile, tmpClassID);
+		if (tmpClassID == classID) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void importSchedule() {
 	ClearPrintDelay();
 	Semester sem;
@@ -241,26 +254,34 @@ void importSchedule() {
 	cout << "\t3. Hoc ki 3" << endl;
 	cout << "\n\tYour choice: ";
 	cin >> choose;
-	while (choose < 1 || choose > 3 || cin.fail() || !isValidYear(sem.year) || !isSemesterExist(sem.year, choose))
+	while (choose < 1 || choose > 3 || cin.fail() || !isValidYear(sem.year) || !isSemesterExist(sem.year, choose) || !isValidClass(sem.classID))
 	{
 		cin.clear();
 		cin.ignore(32767, '\n');
+
 		string err = "";
+
 		if (!isValidYear(sem.year)) {
-			err += "\n\tThe academic year you type is illegal!";
+			err += "\n\n\tThe academic year you type is illegal!";
 		}
+		else if(choose < 1 || choose > 3 || cin.fail()) {
+			err += "\n\n\tYour choice is illegal!";
+		} 
 		else if (!isSemesterExist(sem.year, choose)) {
-			err += "\n\tThe academic year and semester you type have not been existed!\n\tCreate before import!";
+			err += "\n\n\tThe academic year and semester you type have not been existed!\n\tCreate before import!";
 		}
-		if (choose < 1 || choose > 3 || cin.fail()) {
-			err += "\n\tYour choice is illegal!";
+		
+		if (!isValidClass(sem.classID)) {
+			err += "\n\n\tThe classID you enter not found!";
 		}
+
 		if (err.length()) {
 			ClearPrintDelay(err);
 			if (!isSemesterExist(sem.year, choose)) {
 				return;
 			}
 		}
+
 		if (!isValidYear(sem.year) || isSemesterExist(sem.year, choose)) {
 			cout << "\n\tEnter academic year(YYYY-YYYY): ";
 			cin >> sem.year;
@@ -268,6 +289,7 @@ void importSchedule() {
 		else {
 			cout << "\n\tEnter academic year(YYYY-YYYY): " << sem.year << endl;
 		}
+
 		cout << "\tEnter class ID: ";
 		cin >> sem.classID;
 		cout << "\tEnter csv file path: ";
@@ -389,13 +411,14 @@ void importSchedule() {
 			fout << cour[i].startMin << " " << cour[i].endMin << endl;
 			fout << cour[i].room << endl;
 		}
+		//create course files of class schedule
 		for (int i = 0; i < count; i++) {
 			//get class students
 			int NumberOfStudent = 0;
 			StudentInCourse* studentInCour = nullptr;
 			ifstream studentFile("../../" + sem.classID + "-Student.txt");
 			if (!studentFile.is_open()) {
-				ClearPrintDelay("\n\tClass " + sem.classID + " not found");
+				ClearPrintDelay("\n\tYou have to import student file of class " + sem.classID + " first!");
 				return;
 			}
 			studentFile >> NumberOfStudent;
@@ -438,7 +461,11 @@ void importSchedule() {
 				}
 				courseFile << studentInCour[i].statusInCourse << endl;
 			}
+			courseFile.close();
 			delete[] studentInCour;
+		}
+		for (int i = 0; i < count; i++) {
+			delete[] cour[i].atd.listOfWeek;
 		}
 		delete[] cour;
 		fout.close();

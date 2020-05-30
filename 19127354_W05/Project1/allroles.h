@@ -50,6 +50,8 @@ void viewClasses();
 void moveStudent(string filepath);
 void changePassInClass(string filepath, string findingID, string password);
 void classMenu();
+void importStudent(ifstream& fin, Student& studentOut);
+void importCsv(string classID, string filePath);
 // staff course
 struct Semester {
 	string name;
@@ -97,6 +99,7 @@ struct StudentInCourse {
 void courseMenu();
 void createYearSemester();
 bool isValidYear(string year);
+bool isValidClass(string classID);
 bool isSemesterExist(string yearIn, int choose);
 void importSchedule();
 void standardPathFile(string& path);

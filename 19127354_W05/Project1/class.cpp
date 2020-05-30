@@ -548,13 +548,18 @@ void importStudent(ifstream& fin, Student& studentOut)
 	getline(fin, studentOut.classID, '\n');
 }
 
-void importCsv(string filepath)
+void importCsv(string classID, string filePath)
 {
+	if (!isValidClass(classID)) {
+		ClearPrintDelay("\n\tThe classID you enter not found!");
+		return;
+	}
 	ifstream fin;
 	Student* student = nullptr;
-	fin.open("../../" + filepath + "-Student.csv");
+	standardPathFile(filePath);
+	fin.open(filePath);
 	if (!fin.is_open()) {
-		ClearPrintDelay("\n\tClass " + filepath + " CSV file not found");
+		ClearPrintDelay("\n\tClass " + classID + " CSV file not found");
 		return;
 	}
 	int count = 0;
@@ -569,7 +574,7 @@ void importCsv(string filepath)
 	}
 	fin.close();
 	student = new Student[count];
-	fin.open("../../" + filepath + "-Student.csv");
+	fin.open(filePath);
 	getline(fin, firstline);
 	for (int i = 0; i < count; i++) {
 		importStudent(fin, student[i]);
@@ -583,7 +588,7 @@ void importCsv(string filepath)
 		student[i].DoB = S;
 	}
 	ofstream fout;
-	fout.open("../../" + filepath + "-Student.txt");
+	fout.open("../../" + classID + "-Student.txt");
 	fout << count << endl;
 	for (int i = 0; i < count; i++) {
 		fout << student[i].id << endl;
@@ -683,6 +688,7 @@ void changePassInClass(string filepath, string findingID, string newPassword) {
 void classMenu()
 {
 	string classID;
+	string csvFilePath;
 	ClearPrintDelay();
 	int choose;
 
@@ -723,7 +729,9 @@ void classMenu()
 	case 1:
 		cout << "\n\tEnter classID: ";
 		getline(cin, classID);
-		importCsv(classID);
+		cout << "\n\tEnter CSV path: ";
+		getline(cin, csvFilePath);
+		importCsv(classID, csvFilePath);
 		break;
 	case 2:
 		cout << "\n\tEnter classID: ";
