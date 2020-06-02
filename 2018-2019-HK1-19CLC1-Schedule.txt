@@ -1,25 +1,41 @@
-2
+3
 CS162
 Introduction to Programming
 19APCS1
 dbtien
 Dinh Ba Tien
 TS
-4 6 2020
-4 6 2020
-0
+9 4 2020
+8 6 2020
+1
 7 30
 11 30
 I42
+1
 CM101
 Communications
 19APCS1
 dnvu
 Duong Nguyen Vu
 GS
-1 6 2020
-1 6 2020
-5
+7 4 2020
+12 6 2020
+3
 13 30
 17 30
 I23
+1
+
+newcour123
+New Course
+19CLC1
+ntc
+New Teacher
+TC
+5 6 2020
+8 8 2020
+2
+8 30
+11 15
+I12
+1

@@ -65,7 +65,7 @@ struct Date {
 };
 struct Attendance {
 	int numberOfWeek;
-	Date* listOfWeek;
+	Date* listOfWeek = nullptr;
 };
 struct Course {
 	string courseID;
@@ -83,6 +83,7 @@ struct Course {
 	int endHour;
 	int endMin;
 	string room;
+	bool status;
 };
 struct Scoreboard {
 	double midterm = -1;
@@ -103,4 +104,7 @@ bool isValidClass(string classID);
 bool isSemesterExist(string yearIn, int choose);
 void importSchedule();
 void standardPathFile(string& path);
+void scheduleMenu(Semester sem);
+void addCourse(Semester sem);
+void editCourse(Semester sem);
 #endif
