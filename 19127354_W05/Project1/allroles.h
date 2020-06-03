@@ -5,6 +5,7 @@
 #include<string>
 #include<fstream>
 #include<Windows.h>
+#include<stdio.h>
 using namespace std;
 
 // allroles
@@ -107,4 +108,5 @@ void standardPathFile(string& path);
 void scheduleMenu(Semester sem);
 void addCourse(Semester sem);
 void editCourse(Semester sem);
+void reCreateCourseFile(Semester sem, Course& addCourse);
 #endif

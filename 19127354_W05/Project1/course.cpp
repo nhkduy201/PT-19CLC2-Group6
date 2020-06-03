@@ -618,28 +618,153 @@ void addCourse(Semester sem) {
 	delete[] addCourse.atd.listOfWeek;
 }
 
+void reCreateCourseFile(Semester sem, Course &addCourse) {
+	// get student in class
+	int NumberOfStudent = 0;
+	StudentInCourse* studentInCour = nullptr;
+	ifstream studentFile("../../" + sem.classID + "-Student.txt");
+	getListOfWeek(addCourse.atd, addCourse.startDate, addCourse.endDate, addCourse.day);
+	cout << addCourse.atd.numberOfWeek;
+	system("pause");
+	if (!studentFile.is_open()) {
+		ClearPrintDelay("\n\tYou have to import student file of class " + sem.classID + " first!");
+		return;
+	}
+	studentFile >> NumberOfStudent;
+	studentInCour = new StudentInCourse[NumberOfStudent];
+	for (int j = 0; j < NumberOfStudent; j++) {
+		studentFile.ignore();
+		getline(studentFile, studentInCour[j].std.id);
+		getline(studentFile, studentInCour[j].std.password);
+		getline(studentFile, studentInCour[j].std.name);
+		getline(studentFile, studentInCour[j].std.DoB);
+		getline(studentFile, studentInCour[j].std.classID);
+		studentFile >> studentInCour[j].std.status;
+		studentInCour[j].scb.midterm = -1;
+		studentInCour[j].scb.final = -1;
+		studentInCour[j].scb.bobus = -1;
+		studentInCour[j].scb.total = -1;
+		studentInCour[j].listOfCheckIn = new bool[addCourse.atd.numberOfWeek];
+		for (int k = 0; k < addCourse.atd.numberOfWeek; k++) {
+			studentInCour[j].listOfCheckIn[k] = true;
+		}
+		studentInCour[j].statusInCourse = 1;
+	}
+	studentFile.close();
+	//write to class course
+	ofstream courseFile("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-" + addCourse.courseID + "-Student.txt");
+	courseFile << NumberOfStudent << endl;
+	for (int j = 0; j < NumberOfStudent; j++) {
+		courseFile << studentInCour[j].std.id << endl;
+		courseFile << studentInCour[j].std.password << endl;
+		courseFile << studentInCour[j].std.name << endl;
+		courseFile << studentInCour[j].std.DoB << endl;
+		courseFile << studentInCour[j].std.classID << endl;
+		courseFile << studentInCour[j].std.status << endl;
+		courseFile << studentInCour[j].scb.midterm << endl;
+		courseFile << studentInCour[j].scb.final << endl;
+		courseFile << studentInCour[j].scb.bobus << endl;
+		courseFile << studentInCour[j].scb.total << endl;
+		for (int k = 0; k < addCourse.atd.numberOfWeek; k++) {
+			courseFile << studentInCour[j].listOfCheckIn[k] << endl;
+		}
+		courseFile << studentInCour[j].statusInCourse << endl;
+	}
+	courseFile.close();
+	for (int j = 0; j < NumberOfStudent; j++) {
+		delete[] studentInCour[j].listOfCheckIn;
+	}
+	delete[] studentInCour;
+	delete[] addCourse.atd.listOfWeek;
+}
+
 void editCourse(Semester sem) {
-	string top, bottom;
+	string top = "", bottom = "", tmpCourseID, tmpDay, tmpLine;
 	bool isCourseFound = false;
 	Course tmpCourse;
 	cout << "\n\tEnter courseID: ";
 	getline(cin, tmpCourse.courseID);
 	ClearPrintDelay();
+	ifstream scheduleFileIn("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-Schedule.txt");
+	if (!scheduleFileIn.is_open()) {
+		ClearPrintDelay("\n\tYou have to import schedule file of class " + sem.classID + " first!");
+		return;
+	}
+	getline(scheduleFileIn, tmpCourseID);
+	top += tmpCourseID;
+	while (!scheduleFileIn.eof()) {
+		getline(scheduleFileIn, tmpCourseID);
+		if (tmpCourseID == tmpCourse.courseID) {
+			isCourseFound = true;
+			getline(scheduleFileIn, tmpCourse.courseName);
+			getline(scheduleFileIn, tmpCourse.classID);
+			getline(scheduleFileIn, tmpCourse.lecturerUsername);
+			getline(scheduleFileIn, tmpCourse.lecturerName);
+			getline(scheduleFileIn, tmpCourse.degree);
+			scheduleFileIn >> tmpCourse.startDate.day >> tmpCourse.startDate.month >> tmpCourse.startDate.year;
+			scheduleFileIn.ignore();
+			scheduleFileIn >> tmpCourse.endDate.day >> tmpCourse.endDate.month >> tmpCourse.endDate.year;
+			scheduleFileIn.ignore();
+			getline(scheduleFileIn, tmpDay);
+			if (tmpDay == "0") {
+				tmpCourse.day = 0;
+			}
+			else if (tmpDay == "1") {
+				tmpCourse.day = 1;
+			}
+			else if (tmpDay == "2") {
+				tmpCourse.day = 2;
+			}
+			else if (tmpDay == "3") {
+				tmpCourse.day = 3;
+			}
+			else if (tmpDay == "4") {
+				tmpCourse.day = 4;
+			}
+			else if (tmpDay == "5") {
+				tmpCourse.day = 5;
+			}
+			else if (tmpDay == "6") {
+				tmpCourse.day = 6;
+			}
+			scheduleFileIn >> tmpCourse.startHour >> tmpCourse.startMin;
+			scheduleFileIn.ignore();
+			scheduleFileIn >> tmpCourse.endHour >> tmpCourse.endMin;
+			scheduleFileIn.ignore();
+			getline(scheduleFileIn, tmpCourse.room);
+			scheduleFileIn >> tmpCourse.status;
+			scheduleFileIn.ignore();
+			while (!scheduleFileIn.eof()) {
+				getline(scheduleFileIn, tmpLine);
+				bottom += ("\n" + tmpLine);
+			}
+			break;
+		}
+		else {
+			top += ("\n" + tmpCourseID);
+		}
+	}
+	scheduleFileIn.close();
+	if (!isCourseFound) {
+		ClearPrintDelay("Your course ID not found!");
+		return;
+	}
 	int choose;
 	cout << "\n\t0. Back" << endl;
 	cout << "\t1. Course ID" << endl;
 	cout << "\t2. Course Name" << endl;
 	cout << "\t3. Lecturer Username" << endl;
 	cout << "\t4. Lecturer Name" << endl;
-	cout << "\t5. Start Date" << endl;
-	cout << "\t6. End Date" << endl;
-	cout << "\t7. Start Hour, Minute" << endl;
-	cout << "\t8. End Hour, Minute" << endl;
-	cout << "\t9. Room" << endl;
+	cout << "\t5. Lecturer Degree" << endl;
+	cout << "\t6. Start Date, End Date" << endl;
+	cout << "\t7. Day of Week" << endl;
+	cout << "\t8. Start Hour, Minute" << endl;
+	cout << "\t9. End Hour, Minute" << endl;
+	cout << "\t10. Room" << endl;
 	cout << "\n\tEnter your choice: ";
 	cin >> choose;
 
-	while (choose < 0 || choose > 9 || cin.fail())
+	while (choose < 0 || choose > 10 || cin.fail())
 	{
 		cin.clear();
 		cin.ignore(32767, '\n');
@@ -649,11 +774,12 @@ void editCourse(Semester sem) {
 		cout << "\t2. Course Name" << endl;
 		cout << "\t3. Lecturer Username" << endl;
 		cout << "\t4. Lecturer Name" << endl;
-		cout << "\t5. Start Date" << endl;
-		cout << "\t6. End Date" << endl;
-		cout << "\t7. Start Hour, Minute" << endl;
-		cout << "\t8. End Hour, Minute" << endl;
-		cout << "\t9. Room" << endl;
+		cout << "\t5. Lecturer Degree" << endl;
+		cout << "\t6. Start Date, End Date" << endl;
+		cout << "\t7. Day of Week" << endl;
+		cout << "\t8. Start Hour, Minute" << endl;
+		cout << "\t9. End Hour, Minute" << endl;
+		cout << "\t10. Room" << endl;
 		cout << "\n\tEnter your choice: ";
 		cin >> choose;
 	}
@@ -664,33 +790,102 @@ void editCourse(Semester sem) {
 	case 0:
 		break;
 	case 1:
-		
-		break;
-	case 2:
-		
-		break;
-	case 3:
-		
-		break;
-	case 4:
-
-		break;
-	case 5:
-
-		break;
-	case 6:
-
-		break;
-	case 7:
-
-		break;
-	case 8:
-
-		break;
-	case 9:
-
+	{
+		string stringPath = "../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-" + tmpCourse.courseID + "-Student.txt";
+		cout << "Enter Course ID: ";
+		getline(cin, tmpCourse.courseID);
+		char* charArrayPath = new char[stringPath.length() + 1];
+		for (int i = 0; i < stringPath.length(); i++) {
+			charArrayPath[i] = stringPath[i];
+		}
+		charArrayPath[stringPath.length()] = '\0';
+		remove(charArrayPath);
+		delete[] charArrayPath;
+		reCreateCourseFile(sem, tmpCourse);
 		break;
 	}
+	case 2:
+		cout << "Enter Course Name: ";
+		getline(cin, tmpCourse.courseName);
+		break;
+	case 3:
+		cout << "Enter Lecturer Username: ";
+		getline(cin, tmpCourse.lecturerUsername);
+		break;
+	case 4:
+		cout << "Enter Lecturer Name: ";
+		getline(cin, tmpCourse.lecturerName);
+		break;
+	case 5:
+		cout << "Enter Lecturer Degree: ";
+		getline(cin, tmpCourse.degree);
+		break;
+	case 6:
+		cout << "Enter Start date(D M Y): ";
+		cin >> tmpCourse.startDate.day >> tmpCourse.startDate.month >> tmpCourse.startDate.year;
+		cin.ignore();
+		cout << "Enter End date(D M Y): ";
+		cin >> tmpCourse.endDate.day >> tmpCourse.endDate.month >> tmpCourse.endDate.year;
+		cin.ignore();
+		reCreateCourseFile(sem, tmpCourse);
+		break;
+	case 7:
+		cout << "Enter Day of Week: ";
+		getline(cin, tmpDay);
+		if (tmpDay == "MON") {
+			tmpCourse.day = 0;
+		}
+		else if (tmpDay == "TUE") {
+			tmpCourse.day = 1;
+		}
+		else if (tmpDay == "WED") {
+			tmpCourse.day = 2;
+		}
+		else if (tmpDay == "THU") {
+			tmpCourse.day = 3;
+		}
+		else if (tmpDay == "FRI") {
+			tmpCourse.day = 4;
+		}
+		else if (tmpDay == "SAT") {
+			tmpCourse.day = 5;
+		}
+		else if (tmpDay == "SUN") {
+			tmpCourse.day = 6;
+		}
+		break;
+	case 8:
+		cout << "Enter Start Hour, Minute: ";
+		cin >> tmpCourse.startHour >> tmpCourse.startMin;
+		cin.ignore();
+		break;
+	case 9:
+		cout << "Enter End Hour, Minute: ";
+		cin >> tmpCourse.endHour >> tmpCourse.endMin;
+		cin.ignore();
+		break;
+	case 10:
+		cout << "Enter Room: ";
+		getline(cin, tmpCourse.room);
+		break;
+	}
+	ofstream scheduleFileOut("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-Schedule.txt");
+	scheduleFileOut << top << endl;
+	scheduleFileOut << tmpCourse.courseID << endl;
+	scheduleFileOut << tmpCourse.courseName << endl;
+	scheduleFileOut << tmpCourse.classID << endl;
+	scheduleFileOut << tmpCourse.lecturerUsername << endl;
+	scheduleFileOut << tmpCourse.lecturerName << endl;
+	scheduleFileOut << tmpCourse.degree << endl;
+	scheduleFileOut << tmpCourse.startDate.day << " " << tmpCourse.startDate.month << " " << tmpCourse.startDate.year << endl;
+	scheduleFileOut << tmpCourse.endDate.day << " " << tmpCourse.endDate.month << " " << tmpCourse.endDate.year << endl;
+	scheduleFileOut << tmpCourse.day << endl;
+	scheduleFileOut << tmpCourse.startHour << " " << tmpCourse.startMin << endl;
+	scheduleFileOut << tmpCourse.endHour << " " << tmpCourse.endMin << endl;
+	scheduleFileOut << tmpCourse.room << endl;
+	scheduleFileOut << tmpCourse.status;
+	scheduleFileOut << bottom;
+	scheduleFileOut.close();
 }
 
 void scheduleMenu(Semester sem) {
@@ -727,8 +922,8 @@ void scheduleMenu(Semester sem) {
 		scheduleMenu(sem);
 		break;
 	case 2:
-		//editCourse(sem);
-		//scheduleMenu(sem);
+		editCourse(sem);
+		scheduleMenu(sem);
 		break;
 	case 3:
 		//removeCourse(sem);
