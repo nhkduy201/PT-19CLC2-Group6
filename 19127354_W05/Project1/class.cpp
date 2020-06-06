@@ -641,6 +641,7 @@ void importCsv(string classID, string filePath)
 	fin.close();
 	ClearPrintDelay("\n\tImport successfully!");
 }
+
 void changePassInClass(string filepath, string findingID, string newPassword) {
 	int NumberOfStudent = 0;
 	ifstream fin;

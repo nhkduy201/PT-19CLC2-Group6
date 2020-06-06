@@ -1,4 +1,4 @@
-4
+5
 19127001
 29012001
 Nguyen Van Teo
@@ -61,6 +61,25 @@ Ly Thi Rieng
 I Love You 3000
 31 07 2001
 19CLC1
+1
+-1
+-1
+-1
+-1
+1
+1
+1
+1
+1
+1
+1
+1
+0
+19122281
+alathu2
+Nguyen Van Hai
+09 09 2009
+17APCS2
 1
 -1
 -1

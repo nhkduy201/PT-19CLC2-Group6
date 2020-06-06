@@ -109,4 +109,9 @@ void scheduleMenu(Semester sem);
 void addCourse(Semester sem);
 void editCourse(Semester sem);
 void reCreateCourseFile(Semester sem, Course& addCourse);
+void removeCourse(Semester sem);
+void addStudentToCourse(Semester sem);
+void removeStudentInCourse(Semester sem);
+void viewListOfCourses(Semester sem);
+void viewListOfStuInCour(Semester sem);
 #endif
