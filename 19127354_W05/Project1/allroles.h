@@ -31,7 +31,6 @@ void ClearPrintDelay();
 void ViewProfile(User user);
 // staff class
 struct Student {
-	int No;
 	string id;
 	string password;
 	string name;
@@ -51,6 +50,8 @@ void viewClasses();
 void moveStudent(string filepath);
 void changePassInClass(string filepath, string findingID, string password);
 void classMenu();
+void importStudent(ifstream& fin, Student& studentOut);
+void importCsv(string classID, string filePath);
 // staff course
 struct Semester {
 	string name;
@@ -58,9 +59,13 @@ struct Semester {
 	string classID;
 	string csvPath;
 };
-struct AttendanceTime {
-	int numOfWeek;
-	string* listOfWeekTime;
+struct Date {
+	int day, month, year, DOW;
+	int dayFromTheOrigin;
+};
+struct Attendance {
+	int numberOfWeek;
+	Date* listOfWeek;
 };
 struct Course {
 	string courseID;
@@ -69,14 +74,14 @@ struct Course {
 	string lecturerUsername;
 	string lecturerName;
 	string degree;
-	string startDate;
-	string endDate;
-	string day;
-	string startHour;
-	string startMin;
-	AttendanceTime atd;
-	string endHour;
-	string endMin;
+	Date startDate;
+	Date endDate;
+	int day;
+	Attendance atd;
+	int startHour;
+	int startMin;
+	int endHour;
+	int endMin;
 	string room;
 };
 struct Scoreboard {
@@ -89,10 +94,12 @@ struct StudentInCourse {
 	Student std;
 	Scoreboard scb;
 	bool* listOfCheckIn;
+	bool statusInCourse;
 };
 void courseMenu();
 void createYearSemester();
 bool isValidYear(string year);
+bool isValidClass(string classID);
 bool isSemesterExist(string yearIn, int choose);
 void importSchedule();
 void standardPathFile(string& path);

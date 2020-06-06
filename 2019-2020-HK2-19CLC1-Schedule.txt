@@ -5,9 +5,9 @@ Introduction to Programming
 dbtien
 Dinh Ba Tien
 TS
-04 06 2020
-04 06 2020
-MON
+4 6 2020
+4 6 2020
+0
 7 30
 11 30
 I42
@@ -17,9 +17,9 @@ Communications
 dnvu
 Duong Nguyen Vu
 GS
-01 06 2020
-01 06 2020
-SAT
+1 6 2020
+1 6 2020
+5
 13 30
 17 30
 I23
