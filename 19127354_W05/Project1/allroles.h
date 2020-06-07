@@ -114,4 +114,5 @@ void addStudentToCourse(Semester sem);
 void removeStudentInCourse(Semester sem);
 void viewListOfCourses(Semester sem);
 void viewListOfStuInCour(Semester sem);
+void viewAtdListOfCour(Semester sem);
 #endif
