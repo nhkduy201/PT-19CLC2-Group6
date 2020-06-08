@@ -141,6 +141,7 @@
     <ClCompile Include="allroles.cpp" />
     <ClCompile Include="class.cpp" />
     <ClCompile Include="course.cpp" />
+    <ClCompile Include="lecturer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

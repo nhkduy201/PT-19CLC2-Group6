@@ -89,7 +89,7 @@ struct Course {
 struct Scoreboard {
 	double midterm = -1;
 	double final = -1;
-	double bobus = -1;
+	double bonus = -1;
 	double total = -1;
 };
 struct StudentInCourse {
@@ -103,16 +103,25 @@ void createYearSemester();
 bool isValidYear(string year);
 bool isValidClass(string classID);
 bool isSemesterExist(string yearIn, int choose);
+void getDayOfWeek(Date& date);
+void getDate(Date& date, int dayFromTheOrigin);
+void getListOfWeek(Attendance& list, Date& start, Date& end, int theDay);
 void importSchedule();
 void standardPathFile(string& path);
 void scheduleMenu(Semester sem);
 void addCourse(Semester sem);
 void editCourse(Semester sem);
-void reCreateCourseFile(Semester sem, Course& addCourse);
+void reCreateCourseFile(Semester sem, Course& addCourse, Course& oldCourse, string newCourseID, bool isChangeDate);
 void removeCourse(Semester sem);
 void addStudentToCourse(Semester sem);
 void removeStudentInCourse(Semester sem);
 void viewListOfCourses(Semester sem);
 void viewListOfStuInCour(Semester sem);
 void viewAtdListOfCour(Semester sem);
+// lecturer
+void lecturerMenu();
+void importScoreboard(Semester sem);
+void editAtd(Semester sem);
+void viewScbOfCour(Semester sem);
+void editScbOfStu(Semester sem);
 #endif
