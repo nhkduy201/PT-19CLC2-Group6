@@ -130,11 +130,37 @@ void UserMenu(User& user) {
 		break;
 	case 3:
 		if (user.role == "Staff") {
-			classMenu();
+			ClearPrintDelay();
+			int choose;
+			cout << "\n\t0. Back" << endl;
+			cout << "\t1. Class Menu" << endl;
+			cout << "\t2. Course Menu" << endl;
+			cout << "\tYour choice: ";
+			cin >> choose;
+			while (choose < 0 || choose > 3 || cin.fail()) {
+				cin.clear();
+				cin.ignore(32767, '\n');
+				ClearPrintDelay("\n\tYour choice is illegal. Try again.");
+				cout << "\n\t0. Back" << endl;
+				cout << "\t1. Class Menu" << endl;
+				cout << "\t2. Course Menu" << endl;
+				cout << "\tYour choice: ";
+				cin >> choose;
+			}
+			switch (choose) {
+			case 0:
+				break;
+			case 1:
+				classMenu();
+				break;
+			case 2:
+				courseMenu();
+				break;
+			}
 			UserMenu(user);
 		}
 		else if (user.role == "Lecturer") {
-			ClearPrintDelay("\n\tYour role feature has not been completed. We're so sorry about that!");
+			lecturerMenu();
 			UserMenu(user);
 		}
 		else {

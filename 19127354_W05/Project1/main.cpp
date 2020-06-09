@@ -2,6 +2,8 @@
 #include"allroles.h"
 int main(){
 	MainMenu();
-	/*courseMenu();*/
+	//classMenu();
+	//courseMenu();
+	//lecturerMenu();
 	return 0;
 }
