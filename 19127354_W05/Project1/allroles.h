@@ -6,6 +6,8 @@
 #include<fstream>
 #include<Windows.h>
 #include<stdio.h>
+#include <time.h>
+#include <cstring>
 using namespace std;
 
 // allroles
@@ -60,9 +62,13 @@ struct Semester {
 	string classID;
 	string csvPath;
 };
+struct Time {
+	int hour, min;
+};
 struct Date {
 	int day, month, year, DOW;
 	int dayFromTheOrigin;
+	Time time;
 };
 struct Attendance {
 	int numberOfWeek;
@@ -124,4 +130,9 @@ void importScoreboard(Semester sem);
 void editAtd(Semester sem);
 void viewScbOfCour(Semester sem);
 void editScbOfStu(Semester sem);
+// student
+void getCurrentDate(Date& currentDate);
+void studentMenu(string studentID);
+void studentCheckIn(Semester sem, string studentID, string courseID);
+void viewSchedule(Semester sem);
 #endif
