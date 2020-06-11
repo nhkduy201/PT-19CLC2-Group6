@@ -5,5 +5,6 @@ int main(){
 	//classMenu();
 	//courseMenu();
 	//lecturerMenu();
+	//studentMenu("19127001");
 	return 0;
 }

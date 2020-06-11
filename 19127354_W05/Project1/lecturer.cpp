@@ -622,135 +622,89 @@ void lecturerMenu() {
 	ClearPrintDelay();
 	switch (choose)
 	{
-	case 0:
-		break;
-	case 2:
-		{
-		Semester sem;
-		int choose;
-		// get semester
-		cout << "\n\tEnter academic year(YYYY-YYYY): ";
-		cin >> sem.year;
-		cout << "\tChoose semester:" << endl;
-		cout << "\t1. Hoc ki 1" << endl;
-		cout << "\t2. Hoc ki 2" << endl;
-		cout << "\t3. Hoc ki 3" << endl;
-		cout << "\n\tYour choice: ";
-		cin >> choose;
-		while (choose < 1 || choose > 3 || cin.fail() || !isValidYear(sem.year) || !isSemesterExist(sem.year, choose))
-		{
-			cin.clear();
-			cin.ignore(32767, '\n');
-
-			string err = "";
-
-			if (!isValidYear(sem.year)) {
-				err += "\n\n\tThe academic year you type is illegal!";
-			}
-			else if (choose < 1 || choose > 3 || cin.fail()) {
-				err += "\n\n\tYour choice is illegal!";
-			}
-			else if (!isSemesterExist(sem.year, choose)) {
-				err += "\n\n\tThe academic year and semester you type have not been existed!\n\tCreate before import!";
-			}
-
-			if (err.length()) {
-				ClearPrintDelay(err);
-				if (!isSemesterExist(sem.year, choose)) {
-					return;
-				}
-			}
-
-			if (!isValidYear(sem.year) || isSemesterExist(sem.year, choose)) {
-				cout << "\n\tEnter academic year(YYYY-YYYY): ";
-				cin >> sem.year;
-			}
-			else {
-				cout << "\n\tEnter academic year(YYYY-YYYY): " << sem.year << endl;
-			}
-
-			cout << "\tChoose semester:" << endl;
-			cout << "\t1. Hoc ki 1" << endl;
-			cout << "\t2. Hoc ki 2" << endl;
-			cout << "\t3. Hoc ki 3" << endl;
-			cout << "\n\tYour choice: ";
-			cin >> choose;
-		}
-
-		switch (choose)
-		{
-		case 1:
-			sem.name = "HK1";
+		case 0:
 			break;
 		case 2:
-			sem.name = "HK2";
-			break;
-		case 3:
-			sem.name = "HK3";
-			break;
-		}
-		viewListOfCourses(sem);
-		lecturerMenu();
-		break;
-		}
-		break;
-
-	case 1:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	{
-		Semester sem;
-		int anotherChoose;
-		// get semester
-		cout << "\n\tEnter academic year(YYYY-YYYY): ";
-		cin >> sem.year;
-		cout << "\tEnter class ID: ";
-		cin >> sem.classID;
-		cout << "\tChoose semester:" << endl;
-		cout << "\t1. Hoc ki 1" << endl;
-		cout << "\t2. Hoc ki 2" << endl;
-		cout << "\t3. Hoc ki 3" << endl;
-		cout << "\n\tYour choice: ";
-		cin >> anotherChoose;
-		while (anotherChoose < 1 || anotherChoose > 3 || cin.fail() || !isValidYear(sem.year) || !isSemesterExist(sem.year, anotherChoose) || !isValidClass(sem.classID))
-		{
-			cin.clear();
-			cin.ignore(32767, '\n');
-
-			string err = "";
-
-			if (!isValidYear(sem.year)) {
-				err += "\n\n\tThe academic year you type is illegal!";
-			}
-			else if (anotherChoose < 1 || anotherChoose > 3 || cin.fail()) {
-				err += "\n\n\tYour choice is illegal!";
-			}
-			else if (!isSemesterExist(sem.year, anotherChoose)) {
-				err += "\n\n\tThe academic year and semester you type have not been existed!\n\tCreate before import!";
-			}
-
-			if (!isValidClass(sem.classID)) {
-				err += "\n\n\tThe classID you enter not found!";
-			}
-
-			if (err.length()) {
-				ClearPrintDelay(err);
-				if (!isSemesterExist(sem.year, anotherChoose)) {
-					return;
-				}
-			}
-
-			if (!isValidYear(sem.year) || isSemesterExist(sem.year, anotherChoose)) {
+			{
+				Semester sem;
+				int choose;
+				// get semester
 				cout << "\n\tEnter academic year(YYYY-YYYY): ";
 				cin >> sem.year;
-			}
-			else {
-				cout << "\n\tEnter academic year(YYYY-YYYY): " << sem.year << endl;
-			}
+				cout << "\tChoose semester:" << endl;
+				cout << "\t1. Hoc ki 1" << endl;
+				cout << "\t2. Hoc ki 2" << endl;
+				cout << "\t3. Hoc ki 3" << endl;
+				cout << "\n\tYour choice: ";
+				cin >> choose;
+				while (choose < 1 || choose > 3 || cin.fail() || !isValidYear(sem.year) || !isSemesterExist(sem.year, choose))
+				{
+					cin.clear();
+					cin.ignore(32767, '\n');
 
+					string err = "";
+
+					if (!isValidYear(sem.year)) {
+						err += "\n\n\tThe academic year you type is illegal!";
+					}
+					else if (choose < 1 || choose > 3 || cin.fail()) {
+						err += "\n\n\tYour choice is illegal!";
+					}
+					else if (!isSemesterExist(sem.year, choose)) {
+						err += "\n\n\tThe academic year and semester you type have not been existed!\n\tCreate before import!";
+					}
+
+					if (err.length()) {
+						ClearPrintDelay(err);
+						if (!isSemesterExist(sem.year, choose)) {
+							return;
+						}
+					}
+
+					if (!isValidYear(sem.year) || isSemesterExist(sem.year, choose)) {
+						cout << "\n\tEnter academic year(YYYY-YYYY): ";
+						cin >> sem.year;
+					}
+					else {
+						cout << "\n\tEnter academic year(YYYY-YYYY): " << sem.year << endl;
+					}
+
+					cout << "\tChoose semester:" << endl;
+					cout << "\t1. Hoc ki 1" << endl;
+					cout << "\t2. Hoc ki 2" << endl;
+					cout << "\t3. Hoc ki 3" << endl;
+					cout << "\n\tYour choice: ";
+					cin >> choose;
+				}
+
+				switch (choose)
+				{
+				case 1:
+					sem.name = "HK1";
+					break;
+				case 2:
+					sem.name = "HK2";
+					break;
+				case 3:
+					sem.name = "HK3";
+					break;
+				}
+				viewListOfCourses(sem);
+				lecturerMenu();
+				break;
+			}
+		case 1:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		{
+			Semester sem;
+			int anotherChoose;
+			// get semester
+			cout << "\n\tEnter academic year(YYYY-YYYY): ";
+			cin >> sem.year;
 			cout << "\tEnter class ID: ";
 			cin >> sem.classID;
 			cout << "\tChoose semester:" << endl;
@@ -759,43 +713,87 @@ void lecturerMenu() {
 			cout << "\t3. Hoc ki 3" << endl;
 			cout << "\n\tYour choice: ";
 			cin >> anotherChoose;
-		}
-		cin.ignore();
-		ClearPrintDelay();
-		switch (anotherChoose)
-		{
-		case 1:
-			sem.name = "HK1";
+			while (anotherChoose < 1 || anotherChoose > 3 || cin.fail() || !isValidYear(sem.year) || !isSemesterExist(sem.year, anotherChoose) || !isValidClass(sem.classID))
+			{
+				cin.clear();
+				cin.ignore(32767, '\n');
+
+				string err = "";
+
+				if (!isValidYear(sem.year)) {
+					err += "\n\n\tThe academic year you type is illegal!";
+				}
+				else if (anotherChoose < 1 || anotherChoose > 3 || cin.fail()) {
+					err += "\n\n\tYour choice is illegal!";
+				}
+				else if (!isSemesterExist(sem.year, anotherChoose)) {
+					err += "\n\n\tThe academic year and semester you type have not been existed!\n\tCreate before import!";
+				}
+
+				if (!isValidClass(sem.classID)) {
+					err += "\n\n\tThe classID you enter not found!";
+				}
+
+				if (err.length()) {
+					ClearPrintDelay(err);
+					if (!isSemesterExist(sem.year, anotherChoose)) {
+						return;
+					}
+				}
+
+				if (!isValidYear(sem.year) || isSemesterExist(sem.year, anotherChoose)) {
+					cout << "\n\tEnter academic year(YYYY-YYYY): ";
+					cin >> sem.year;
+				}
+				else {
+					cout << "\n\tEnter academic year(YYYY-YYYY): " << sem.year << endl;
+				}
+
+				cout << "\tEnter class ID: ";
+				cin >> sem.classID;
+				cout << "\tChoose semester:" << endl;
+				cout << "\t1. Hoc ki 1" << endl;
+				cout << "\t2. Hoc ki 2" << endl;
+				cout << "\t3. Hoc ki 3" << endl;
+				cout << "\n\tYour choice: ";
+				cin >> anotherChoose;
+			}
+			cin.ignore();
+			ClearPrintDelay();
+			switch (anotherChoose)
+			{
+			case 1:
+				sem.name = "HK1";
+				break;
+			case 2:
+				sem.name = "HK2";
+				break;
+			case 3:
+				sem.name = "HK3";
+				break;
+			}
+			if (choose == 3)
+			{
+				viewListOfStuInCour(sem);
+			}
+			else if (choose == 4) {
+				viewAtdListOfCour(sem);
+			}
+			else if (choose == 1) {
+				importScoreboard(sem);
+			}
+			else if (choose == 5) {
+				viewScbOfCour(sem);
+			}
+			else if (choose == 6) {
+				editAtd(sem);
+			}
+			else if (choose == 7) {
+				editScbOfStu(sem);
+			}
+			lecturerMenu();
 			break;
-		case 2:
-			sem.name = "HK2";
-			break;
-		case 3:
-			sem.name = "HK3";
-			break;
 		}
-		if (choose == 3)
-		{
-			viewListOfStuInCour(sem);
-		}
-		else if (choose == 4) {
-			viewAtdListOfCour(sem);
-		}
-		else if (choose == 1) {
-			importScoreboard(sem);
-		}
-		else if (choose == 5) {
-			viewScbOfCour(sem);
-		}
-		else if (choose == 6) {
-			editAtd(sem);
-		}
-		else if (choose == 7) {
-			editScbOfStu(sem);
-		}
-		lecturerMenu();
-		break;
-	}
 	}
 
 }

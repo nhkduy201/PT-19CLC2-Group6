@@ -866,30 +866,37 @@ void editCourse(Semester sem) {
 		break;
 		}
 	case 7:
-		cout << "\n\tEnter Day of Week: ";
-		getline(cin, tmpDay);
-		if (tmpDay == "MON") {
-			tmpCourse.day = 0;
+		{
+			cout << "\n\tEnter Day of Week: ";
+			getline(cin, tmpDay);
+			if (tmpDay == "MON") {
+				tmpCourse.day = 0;
+			}
+			else if (tmpDay == "TUE") {
+				tmpCourse.day = 1;
+			}
+			else if (tmpDay == "WED") {
+				tmpCourse.day = 2;
+			}
+			else if (tmpDay == "THU") {
+				tmpCourse.day = 3;
+			}
+			else if (tmpDay == "FRI") {
+				tmpCourse.day = 4;
+			}
+			else if (tmpDay == "SAT") {
+				tmpCourse.day = 5;
+			}
+			else if (tmpDay == "SUN") {
+				tmpCourse.day = 6;
+			}
+			Course oldCourse;
+			oldCourse.startDate = tmpCourse.startDate;
+			oldCourse.endDate = tmpCourse.endDate;
+			oldCourse.day = tmpCourse.day;
+			reCreateCourseFile(sem, tmpCourse, oldCourse, tmpCourse.courseID, true);
+			break;
 		}
-		else if (tmpDay == "TUE") {
-			tmpCourse.day = 1;
-		}
-		else if (tmpDay == "WED") {
-			tmpCourse.day = 2;
-		}
-		else if (tmpDay == "THU") {
-			tmpCourse.day = 3;
-		}
-		else if (tmpDay == "FRI") {
-			tmpCourse.day = 4;
-		}
-		else if (tmpDay == "SAT") {
-			tmpCourse.day = 5;
-		}
-		else if (tmpDay == "SUN") {
-			tmpCourse.day = 6;
-		}
-		break;
 	case 8:
 		cout << "\n\tEnter Start Hour, Minute: ";
 		cin >> tmpCourse.startHour >> tmpCourse.startMin;

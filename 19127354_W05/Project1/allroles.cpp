@@ -164,7 +164,7 @@ void UserMenu(User& user) {
 			UserMenu(user);
 		}
 		else {
-			ClearPrintDelay("\n\tYour role feature has not been completed. We're so sorry about that!");
+			studentMenu(user.username);
 			UserMenu(user);
 		}
 	}

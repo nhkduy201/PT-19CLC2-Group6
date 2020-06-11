@@ -143,6 +143,7 @@
     <ClCompile Include="course.cpp" />
     <ClCompile Include="lecturer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="student.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="allroles.h" />
