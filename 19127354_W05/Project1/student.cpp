@@ -473,6 +473,123 @@ void viewSchedule(Semester sem, string ID) {
 	// code here
 }
 
+void viewStdScore(Semester sem, string studentID, string courseID) {
+	string tmpCourseID, tmpDay;
+	bool isCourseFound = false;
+	Course tmpCourse;
+	tmpCourse.courseID = courseID;
+	ifstream scheduleFileIn("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-Schedule.txt");
+	if (!scheduleFileIn.is_open()) {
+		ClearPrintDelay("\n\tYou have to import schedule file of class " + sem.classID + " first!");
+		return;
+	}
+	while (!scheduleFileIn.eof()) {
+		getline(scheduleFileIn, tmpCourseID);
+		if (tmpCourseID == tmpCourse.courseID) {
+			isCourseFound = true;
+			getline(scheduleFileIn, tmpCourse.courseName);
+			getline(scheduleFileIn, tmpCourse.classID);
+			getline(scheduleFileIn, tmpCourse.lecturerUsername);
+			getline(scheduleFileIn, tmpCourse.lecturerName);
+			getline(scheduleFileIn, tmpCourse.degree);
+			scheduleFileIn >> tmpCourse.startDate.day >> tmpCourse.startDate.month >> tmpCourse.startDate.year;
+			scheduleFileIn.ignore();
+			scheduleFileIn >> tmpCourse.endDate.day >> tmpCourse.endDate.month >> tmpCourse.endDate.year;
+			scheduleFileIn.ignore();
+			getline(scheduleFileIn, tmpDay);
+			if (tmpDay == "0") {
+				tmpCourse.day = 0;
+			}
+			else if (tmpDay == "1") {
+				tmpCourse.day = 1;
+			}
+			else if (tmpDay == "2") {
+				tmpCourse.day = 2;
+			}
+			else if (tmpDay == "3") {
+				tmpCourse.day = 3;
+			}
+			else if (tmpDay == "4") {
+				tmpCourse.day = 4;
+			}
+			else if (tmpDay == "5") {
+				tmpCourse.day = 5;
+			}
+			else if (tmpDay == "6") {
+				tmpCourse.day = 6;
+			}
+			getListOfWeek(tmpCourse.atd, tmpCourse.startDate, tmpCourse.endDate, tmpCourse.day);
+			scheduleFileIn >> tmpCourse.startHour >> tmpCourse.startMin;
+			scheduleFileIn.ignore();
+			scheduleFileIn >> tmpCourse.endHour >> tmpCourse.endMin;
+			break;
+		}
+	}
+	scheduleFileIn.close();
+	if (!isCourseFound) {
+		ClearPrintDelay("\n\tYour course ID not found!");
+		return;
+	}
+
+	//get student matched, get top remain, bottom remain
+	string bottom = "", tmpStudentID, tmpLine;
+	bool isStudentFound = false;
+	int changeWeek;
+	StudentInCourse tmpStudent;
+	tmpStudent.std.id = studentID;
+	ifstream courseFileIn("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-" + tmpCourse.courseID + "-Student.txt");
+	if (!courseFileIn.is_open()) {
+		ClearPrintDelay("\n\tCan't open course of class file!");
+		return;
+	}
+	getline(courseFileIn, tmpStudentID);
+	while (!courseFileIn.eof()) {
+		getline(courseFileIn, tmpStudentID);
+		if (tmpStudentID == tmpStudent.std.id) {
+			isStudentFound = true;
+			getline(courseFileIn, tmpStudent.std.password);
+			getline(courseFileIn, tmpStudent.std.name);
+			getline(courseFileIn, tmpStudent.std.DoB);
+			getline(courseFileIn, tmpStudent.std.classID);
+			courseFileIn >> tmpStudent.std.status;
+			courseFileIn.ignore();
+			courseFileIn >> tmpStudent.scb.midterm;
+			courseFileIn.ignore();
+			courseFileIn >> tmpStudent.scb.final;
+			courseFileIn.ignore();
+			courseFileIn >> tmpStudent.scb.bonus;
+			courseFileIn.ignore();
+			courseFileIn >> tmpStudent.scb.total;
+			courseFileIn.ignore();
+			tmpStudent.listOfCheckIn = new bool[tmpCourse.atd.numberOfWeek];
+			for (int k = 0; k < tmpCourse.atd.numberOfWeek; k++) {
+				courseFileIn >> tmpStudent.listOfCheckIn[k];
+				courseFileIn.ignore();
+			}
+			courseFileIn >> tmpStudent.statusInCourse;
+			courseFileIn.ignore();
+			cout << "\n\t==================================";
+			cout << endl << "\n\t    Student ID: " << tmpStudent.std.id;
+			cout << endl << "\t    Student Name: " << tmpStudent.std.name;
+			cout << endl << "\t    BirthDate:    " << tmpStudent.std.classID;
+			cout << endl << "\t     Name: " << tmpStudent.std.name;
+			cout << endl << "\t\t------------------";
+			cout << endl << "\t    MidTerm: " << tmpStudent.scb.midterm;
+			cout << endl << "\t    Final:   " << tmpStudent.scb.final;
+			cout << endl << "\t    Bonus:   " << tmpStudent.scb.bonus;
+			cout << endl << "\t    Total:   " << tmpStudent.scb.total;
+			system("pause");
+			break;
+		}
+	}
+	if (!isStudentFound) {
+		ClearPrintDelay("\n\tYou don't study at this course!!");
+		return;
+	}
+	courseFileIn.close();
+}
+
+
 void studentMenu(string studentID) {
 	ClearPrintDelay();
 	Semester sem;
@@ -576,6 +693,7 @@ void studentMenu(string studentID) {
 		case 1:
 		case 2:
 		case 3:
+		case 4:
 			{
 				if (choose == 1)
 				{
@@ -592,6 +710,12 @@ void studentMenu(string studentID) {
 				}
 				else if (choose == 3) {
 					viewSchedule(sem, sem.classID);
+				}
+				else if (choose == 4) {
+					string courseID;
+					cout << "\n\tEnter course ID: ";
+					cin >> courseID;
+					viewStdScore(sem, studentID, courseID);
 				}
 				break;
 			}

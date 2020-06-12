@@ -139,4 +139,5 @@ void getCurrentDate(Date& currentDate);
 void studentMenu(string studentID);
 void studentCheckIn(Semester sem, string studentID, string courseID);
 void viewSchedule(Semester sem, string ID);
+void viewStdScore(Semester sem, string studentID, string courseID);
 #endif
