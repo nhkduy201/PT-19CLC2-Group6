@@ -354,7 +354,122 @@ void viewCheckInResult(Semester sem, string studentID, string courseID) {
 		courseFileIn.close();
 }
 
-void viewSchedule(Semester sem) {
+void viewSchedule(Semester sem, string ID) {
+	int numberOfClass = 0;
+	Class* classes = nullptr;
+	ifstream classFile;
+
+	classFile.open("../../Class.txt");
+	if (!classFile.is_open()) {
+		ClearPrintDelay("Class.txt not found");
+		return;
+	}
+	classFile >> numberOfClass;
+	classes = new Class[numberOfClass];
+	for (int i = 0; i < numberOfClass; i++) {
+		getline(classFile, classes[i].classID);
+	}
+	ClearPrintDelay();
+	Course tmpCourse;
+	string tmpDay;
+	int numberOfCourse = 0;
+	bool isCourseExist;
+		isCourseExist = false;
+		ifstream scheduleFileIn("../../" + sem.year + "-" + sem.name + "-" + ID + "-Schedule.txt");
+		if (scheduleFileIn.is_open()) {
+			scheduleFileIn >> numberOfCourse;
+			scheduleFileIn.ignore();
+			while (!scheduleFileIn.eof()) {
+				getline(scheduleFileIn, tmpCourse.courseID);
+				getline(scheduleFileIn, tmpCourse.courseName);
+				getline(scheduleFileIn, tmpCourse.classID);
+				getline(scheduleFileIn, tmpCourse.lecturerUsername);
+				getline(scheduleFileIn, tmpCourse.lecturerName);
+				getline(scheduleFileIn, tmpCourse.degree);
+				scheduleFileIn >> tmpCourse.startDate.day >> tmpCourse.startDate.month >> tmpCourse.startDate.year;
+				scheduleFileIn.ignore();
+				scheduleFileIn >> tmpCourse.endDate.day >> tmpCourse.endDate.month >> tmpCourse.endDate.year;
+				scheduleFileIn.ignore();
+				getline(scheduleFileIn, tmpDay);
+				if (tmpDay == "0") {
+					tmpCourse.day = 0;
+				}
+				else if (tmpDay == "1") {
+					tmpCourse.day = 1;
+				}
+				else if (tmpDay == "2") {
+					tmpCourse.day = 2;
+				}
+				else if (tmpDay == "3") {
+					tmpCourse.day = 3;
+				}
+				else if (tmpDay == "4") {
+					tmpCourse.day = 4;
+				}
+				else if (tmpDay == "5") {
+					tmpCourse.day = 5;
+				}
+				else if (tmpDay == "6") {
+					tmpCourse.day = 6;
+				}
+				scheduleFileIn >> tmpCourse.startHour >> tmpCourse.startMin;
+				scheduleFileIn.ignore();
+				scheduleFileIn >> tmpCourse.endHour >> tmpCourse.endMin;
+				scheduleFileIn.ignore();
+				getline(scheduleFileIn, tmpCourse.room);
+				scheduleFileIn >> tmpCourse.status;
+				scheduleFileIn.ignore();
+				if (tmpCourse.status) {
+					if (!isCourseExist) {
+						cout << "\n\t================ " << ID << " ================\n";
+						isCourseExist = true;
+					}
+					cout << endl << "\tCourse ID: " << tmpCourse.courseID;
+					cout << endl << "\tCourse Name: " << tmpCourse.courseName;
+					cout << endl << "\tLeturer Username: " << tmpCourse.lecturerUsername;
+					cout << endl << "\tLeturer Name: " << tmpCourse.lecturerName;
+					cout << endl << "\tLeturer Degree: " << tmpCourse.degree;
+					cout << endl << "\tStart Date: " << tmpCourse.startDate.day << "/" << tmpCourse.startDate.month << "/" << tmpCourse.startDate.year;
+					cout << endl << "\tEnd Date: " << tmpCourse.endDate.day << "/" << tmpCourse.endDate.month << "/" << tmpCourse.endDate.year;
+					cout << endl << "\tDay of Week: ";
+					switch (tmpCourse.day)
+					{
+					case 0:
+						cout << "Monday";
+						break;
+					case 1:
+						cout << "Tuesday";
+						break;
+					case 2:
+						cout << "Wednesday";
+						break;
+					case 3:
+						cout << "Thursday";
+						break;
+					case 4:
+						cout << "Friday";
+						break;
+					case 5:
+						cout << "Saturday";
+						break;
+					case 6:
+						cout << "Sunday";
+						break;
+					}
+					cout << endl << "\tStart Hour, Minute: " << tmpCourse.startHour << ":" << tmpCourse.startMin;
+					cout << endl << "\tEnd Hour, Minute: " << tmpCourse.endHour << ":" << tmpCourse.endMin;
+					cout << endl << "\tRoom :" << tmpCourse.room << endl;
+					cout << "\n\t --------------------------------------\n";
+				}
+			}
+			scheduleFileIn.close();
+		}
+		else
+		{
+			cout << "\tClass not found!\n";
+		}
+	delete[] classes;
+	system("pause");
 	// code here
 }
 
@@ -460,6 +575,7 @@ void studentMenu(string studentID) {
 			break;
 		case 1:
 		case 2:
+		case 3:
 			{
 				if (choose == 1)
 				{
@@ -475,8 +591,7 @@ void studentMenu(string studentID) {
 					viewCheckInResult(sem, studentID, courseID);
 				}
 				else if (choose == 3) {
-					// code this function above
-					//viewSchedule(sem);
+					viewSchedule(sem, sem.classID);
 				}
 				break;
 			}
