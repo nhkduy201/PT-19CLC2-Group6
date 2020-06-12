@@ -743,7 +743,7 @@ void studentMenu(string studentID) {
 					viewCheckInResult(sem, studentID, courseID);
 				}
 				else if (choose == 3) {
-					viewSchedule(sem, sem.classID);
+					viewSchedule(sem, studentID);
 				}
 				else if (choose == 4) {
 					string courseID;
