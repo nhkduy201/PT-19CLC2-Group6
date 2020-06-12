@@ -124,6 +124,10 @@ void removeStudentInCourse(Semester sem);
 void viewListOfCourses(Semester sem);
 void viewListOfStuInCour(Semester sem);
 void viewAtdListOfCour(Semester sem);
+void viewScrListOfCour(Semester sem);
+void ExportAttendanceListToCsv(Semester sem);
+void ExportScoreboardListToCsv(Semester sem);
+
 // lecturer
 void lecturerMenu();
 void importScoreboard(Semester sem);

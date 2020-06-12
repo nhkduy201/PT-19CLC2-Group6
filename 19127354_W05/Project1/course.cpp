@@ -1617,6 +1617,351 @@ void viewAtdListOfCour(Semester sem) {
 	system("pause");
 	courseFileIn.close();
 }
+void viewScrListOfCour(Semester sem) {
+	string tmpCourseID, tmpDay;
+	bool isCourseFound = false;
+	Course tmpCourse;
+	cout << "\n\tEnter courseID: ";
+	getline(cin, tmpCourse.courseID);
+	ClearPrintDelay();
+	ifstream scheduleFileIn("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-Schedule.txt");
+	if (!scheduleFileIn.is_open()) {
+		ClearPrintDelay("\n\tYou have to import schedule file of class " + sem.classID + " first!");
+		return;
+	}
+	while (!scheduleFileIn.eof()) {
+		getline(scheduleFileIn, tmpCourseID);
+		if (tmpCourseID == tmpCourse.courseID) {
+			isCourseFound = true;
+			getline(scheduleFileIn, tmpCourse.courseName);
+			getline(scheduleFileIn, tmpCourse.classID);
+			getline(scheduleFileIn, tmpCourse.lecturerUsername);
+			getline(scheduleFileIn, tmpCourse.lecturerName);
+			getline(scheduleFileIn, tmpCourse.degree);
+			scheduleFileIn >> tmpCourse.startDate.day >> tmpCourse.startDate.month >> tmpCourse.startDate.year;
+			scheduleFileIn.ignore();
+			scheduleFileIn >> tmpCourse.endDate.day >> tmpCourse.endDate.month >> tmpCourse.endDate.year;
+			scheduleFileIn.ignore();
+			getline(scheduleFileIn, tmpDay);
+			if (tmpDay == "0") {
+				tmpCourse.day = 0;
+			}
+			else if (tmpDay == "1") {
+				tmpCourse.day = 1;
+			}
+			else if (tmpDay == "2") {
+				tmpCourse.day = 2;
+			}
+			else if (tmpDay == "3") {
+				tmpCourse.day = 3;
+			}
+			else if (tmpDay == "4") {
+				tmpCourse.day = 4;
+			}
+			else if (tmpDay == "5") {
+				tmpCourse.day = 5;
+			}
+			else if (tmpDay == "6") {
+				tmpCourse.day = 6;
+			}
+			getListOfWeek(tmpCourse.atd, tmpCourse.startDate, tmpCourse.endDate, tmpCourse.day);
+			break;
+		}
+	}
+	scheduleFileIn.close();
+	if (!isCourseFound) {
+		ClearPrintDelay("\n\tYour course ID not found!");
+		return;
+	}
+
+	//get students
+	StudentInCourse tmpStudent;
+	int numOfStuInCour = 0;
+	ClearPrintDelay();
+	ifstream courseFileIn("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-" + tmpCourse.courseID + "-Student.txt");
+	if (!courseFileIn.is_open()) {
+		ClearPrintDelay("\n\tCan't open course of class file!");
+		return;
+	}
+	courseFileIn >> numOfStuInCour;
+	courseFileIn.ignore();
+	while (!courseFileIn.eof()) {
+		getline(courseFileIn, tmpStudent.std.id);
+		getline(courseFileIn, tmpStudent.std.password);
+		getline(courseFileIn, tmpStudent.std.name);
+		getline(courseFileIn, tmpStudent.std.DoB);
+		getline(courseFileIn, tmpStudent.std.classID);
+		courseFileIn >> tmpStudent.std.status;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.midterm;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.final;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.bonus;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.total;
+		courseFileIn.ignore();
+		tmpStudent.listOfCheckIn = new bool[tmpCourse.atd.numberOfWeek];
+		for (int k = 0; k < tmpCourse.atd.numberOfWeek; k++) {
+			courseFileIn >> tmpStudent.listOfCheckIn[k];
+			courseFileIn.ignore();
+		}
+		courseFileIn >> tmpStudent.statusInCourse;
+		courseFileIn.ignore();
+		if (tmpStudent.statusInCourse) {
+			cout << "\n\t==================================";
+			cout << endl << "\n\t    Student ID: " << tmpStudent.std.id;
+			cout << endl << "\t    Student Name: " << tmpStudent.std.name;
+			cout << endl << "\t\t------------------" << endl;;
+			cout << "\t    MIDTERM: " << tmpStudent.scb.midterm << endl;
+			cout << "\t    FINAL:   " << tmpStudent.scb.final << endl;
+			cout << "\t    BONUS:   " << tmpStudent.scb.bonus << endl;
+			cout << "\t    TOTAL:   " << tmpStudent.scb.total << endl;
+		}
+	}
+	cout << "\n\t==================================\n";
+	system("pause");
+	courseFileIn.close();
+}
+void ExportAttendanceListToCsv(Semester sem) {
+	string tmpCourseID, tmpDay;
+	bool isCourseFound = false;
+	Course tmpCourse;
+	cout << "\n\tEnter courseID: ";
+	getline(cin, tmpCourse.courseID);
+	ClearPrintDelay();
+	ifstream scheduleFileIn("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-Schedule.txt");
+	if (!scheduleFileIn.is_open()) {
+		ClearPrintDelay("\n\tYou have to import schedule file of class " + sem.classID + " first!");
+		return;
+	}
+	while (!scheduleFileIn.eof()) {
+		getline(scheduleFileIn, tmpCourseID);
+		if (tmpCourseID == tmpCourse.courseID) {
+			isCourseFound = true;
+			getline(scheduleFileIn, tmpCourse.courseName);
+			getline(scheduleFileIn, tmpCourse.classID);
+			getline(scheduleFileIn, tmpCourse.lecturerUsername);
+			getline(scheduleFileIn, tmpCourse.lecturerName);
+			getline(scheduleFileIn, tmpCourse.degree);
+			scheduleFileIn >> tmpCourse.startDate.day >> tmpCourse.startDate.month >> tmpCourse.startDate.year;
+			scheduleFileIn.ignore();
+			scheduleFileIn >> tmpCourse.endDate.day >> tmpCourse.endDate.month >> tmpCourse.endDate.year;
+			scheduleFileIn.ignore();
+			getline(scheduleFileIn, tmpDay);
+			if (tmpDay == "0") {
+				tmpCourse.day = 0;
+			}
+			else if (tmpDay == "1") {
+				tmpCourse.day = 1;
+			}
+			else if (tmpDay == "2") {
+				tmpCourse.day = 2;
+			}
+			else if (tmpDay == "3") {
+				tmpCourse.day = 3;
+			}
+			else if (tmpDay == "4") {
+				tmpCourse.day = 4;
+			}
+			else if (tmpDay == "5") {
+				tmpCourse.day = 5;
+			}
+			else if (tmpDay == "6") {
+				tmpCourse.day = 6;
+			}
+			getListOfWeek(tmpCourse.atd, tmpCourse.startDate, tmpCourse.endDate, tmpCourse.day);
+			break;
+		}
+	}
+	scheduleFileIn.close();
+	if (!isCourseFound) {
+		ClearPrintDelay("\n\tYour course ID not found!");
+		return;
+	}
+
+	//get students
+	StudentInCourse tmpStudent;
+	int numOfStuInCour = 0;
+	ClearPrintDelay();
+	ofstream ATDCSV("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-" + tmpCourse.courseID + "-Attendance.csv");
+	ATDCSV << "MSSV," << "NAME";
+	for (int i = 0; i < tmpCourse.atd.numberOfWeek; i++) {
+		ATDCSV <<','<<"Week "<< i+1;
+	}
+	ATDCSV << endl;
+	ifstream courseFileIn("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-" + tmpCourse.courseID + "-Student.txt");
+	if (!courseFileIn.is_open()) {
+		ClearPrintDelay("\n\tCan't open course of class file!");
+		return;
+	}
+	courseFileIn >> numOfStuInCour;
+	courseFileIn.ignore();
+	while (!courseFileIn.eof()) {
+		getline(courseFileIn, tmpStudent.std.id);
+		getline(courseFileIn, tmpStudent.std.password);
+		getline(courseFileIn, tmpStudent.std.name);
+		getline(courseFileIn, tmpStudent.std.DoB);
+		getline(courseFileIn, tmpStudent.std.classID);
+		courseFileIn >> tmpStudent.std.status;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.midterm;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.final;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.bonus;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.total;
+		courseFileIn.ignore();
+		tmpStudent.listOfCheckIn = new bool[tmpCourse.atd.numberOfWeek];
+		for (int k = 0; k < tmpCourse.atd.numberOfWeek; k++) {
+			courseFileIn >> tmpStudent.listOfCheckIn[k];
+			courseFileIn.ignore();
+		}
+		courseFileIn >> tmpStudent.statusInCourse;
+		courseFileIn.ignore();
+		if (tmpStudent.statusInCourse) {
+			/*cout << "\n\t==================================";
+			cout << endl << "\n\t    Student ID: " << tmpStudent.std.id;
+			cout << endl << "\t    Student Name: " << tmpStudent.std.name;
+			for (int i = 0; i < tmpCourse.atd.numberOfWeek; i++) {
+				cout << endl << "\t\t------------------";
+				cout << endl << "\t    Date: " << tmpCourse.atd.listOfWeek[i].day << " / " << tmpCourse.atd.listOfWeek[i].month << " / " << tmpCourse.atd.listOfWeek[i].year;
+				cout << endl << "\t    Attendance: ";
+				if (tmpStudent.listOfCheckIn[i])
+					cout << "Yes";
+				else
+					cout << "No";
+			}
+			cout << endl;*/
+			ATDCSV << tmpStudent.std.id << ',' << tmpStudent.std.name ;
+			for (int i = 0; i < tmpCourse.atd.numberOfWeek; i++) {
+				ATDCSV << ',' << tmpStudent.listOfCheckIn[i];
+			}
+			ATDCSV << endl;
+		}
+	}
+	cout << "\n\t==================================\n";
+	system("pause");
+	courseFileIn.close();
+}
+void ExportScoreboardListToCsv(Semester sem) {
+	string tmpCourseID, tmpDay;
+	bool isCourseFound = false;
+	Course tmpCourse;
+	cout << "\n\tEnter courseID: ";
+	getline(cin, tmpCourse.courseID);
+	ClearPrintDelay();
+	ifstream scheduleFileIn("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-Schedule.txt");
+	if (!scheduleFileIn.is_open()) {
+		ClearPrintDelay("\n\tYou have to import schedule file of class " + sem.classID + " first!");
+		return;
+	}
+	while (!scheduleFileIn.eof()) {
+		getline(scheduleFileIn, tmpCourseID);
+		if (tmpCourseID == tmpCourse.courseID) {
+			isCourseFound = true;
+			getline(scheduleFileIn, tmpCourse.courseName);
+			getline(scheduleFileIn, tmpCourse.classID);
+			getline(scheduleFileIn, tmpCourse.lecturerUsername);
+			getline(scheduleFileIn, tmpCourse.lecturerName);
+			getline(scheduleFileIn, tmpCourse.degree);
+			scheduleFileIn >> tmpCourse.startDate.day >> tmpCourse.startDate.month >> tmpCourse.startDate.year;
+			scheduleFileIn.ignore();
+			scheduleFileIn >> tmpCourse.endDate.day >> tmpCourse.endDate.month >> tmpCourse.endDate.year;
+			scheduleFileIn.ignore();
+			getline(scheduleFileIn, tmpDay);
+			if (tmpDay == "0") {
+				tmpCourse.day = 0;
+			}
+			else if (tmpDay == "1") {
+				tmpCourse.day = 1;
+			}
+			else if (tmpDay == "2") {
+				tmpCourse.day = 2;
+			}
+			else if (tmpDay == "3") {
+				tmpCourse.day = 3;
+			}
+			else if (tmpDay == "4") {
+				tmpCourse.day = 4;
+			}
+			else if (tmpDay == "5") {
+				tmpCourse.day = 5;
+			}
+			else if (tmpDay == "6") {
+				tmpCourse.day = 6;
+			}
+			getListOfWeek(tmpCourse.atd, tmpCourse.startDate, tmpCourse.endDate, tmpCourse.day);
+			break;
+		}
+	}
+	scheduleFileIn.close();
+	if (!isCourseFound) {
+		ClearPrintDelay("\n\tYour course ID not found!");
+		return;
+	}
+
+	//get students
+	StudentInCourse tmpStudent;
+	int numOfStuInCour = 0;
+	ClearPrintDelay();
+	ofstream SCRCSV("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-" + tmpCourse.courseID + "-Scoreboard.csv");
+	SCRCSV << "MSSV,NAME,MIDTERM,FINAL,BONUS,TOTAL" << endl;
+	ifstream courseFileIn("../../" + sem.year + "-" + sem.name + "-" + sem.classID + "-" + tmpCourse.courseID + "-Student.txt");
+	if (!courseFileIn.is_open()) {
+		ClearPrintDelay("\n\tCan't open course of class file!");
+		return;
+	}
+	courseFileIn >> numOfStuInCour;
+	courseFileIn.ignore();
+	while (!courseFileIn.eof()) {
+		getline(courseFileIn, tmpStudent.std.id);
+		getline(courseFileIn, tmpStudent.std.password);
+		getline(courseFileIn, tmpStudent.std.name);
+		getline(courseFileIn, tmpStudent.std.DoB);
+		getline(courseFileIn, tmpStudent.std.classID);
+		courseFileIn >> tmpStudent.std.status;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.midterm;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.final;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.bonus;
+		courseFileIn.ignore();
+		courseFileIn >> tmpStudent.scb.total;
+		courseFileIn.ignore();
+		tmpStudent.listOfCheckIn = new bool[tmpCourse.atd.numberOfWeek];
+		for (int k = 0; k < tmpCourse.atd.numberOfWeek; k++) {
+			courseFileIn >> tmpStudent.listOfCheckIn[k];
+			courseFileIn.ignore();
+		}
+		courseFileIn >> tmpStudent.statusInCourse;
+		courseFileIn.ignore();
+		if (tmpStudent.statusInCourse) {
+			/*cout << "\n\t==================================";
+			cout << endl << "\n\t    Student ID: " << tmpStudent.std.id;
+			cout << endl << "\t    Student Name: " << tmpStudent.std.name;
+			for (int i = 0; i < tmpCourse.atd.numberOfWeek; i++) {
+				cout << endl << "\t\t------------------";
+				cout << endl << "\t    Date: " << tmpCourse.atd.listOfWeek[i].day << " / " << tmpCourse.atd.listOfWeek[i].month << " / " << tmpCourse.atd.listOfWeek[i].year;
+				cout << endl << "\t    Attendance: ";
+				if (tmpStudent.listOfCheckIn[i])
+					cout << "Yes";
+				else
+					cout << "No";
+			}
+			cout << endl;*/
+			SCRCSV << tmpStudent.std.id << ',' << tmpStudent.std.name << ',';
+			SCRCSV << tmpStudent.scb.midterm << ',' << tmpStudent.scb.final << ',' << tmpStudent.scb.bonus << ',' << tmpStudent.scb.total << endl;;
+		}
+	}
+	cout << "\n\t==================================\n";
+	system("pause");
+	courseFileIn.close();
+}
+
+
 
 void scheduleMenu(Semester sem) {
 	ClearPrintDelay();
@@ -1636,10 +1981,13 @@ void scheduleMenu(Semester sem) {
 	cout << "\t5. Remove student in a course" << endl;
 	cout << "\t6. View list of student in a course" << endl;
 	cout << "\t7. View attendance list of a course" << endl;
+	cout << "\t8. View scoreboard list of a course" << endl;
+	cout << "\t9. Export attendance list of a course to csv file" << endl;
+	cout << "\t10. Export scoreboard list of a course to csv file" << endl;
 	cout << "\n\tEnter your choice: ";
 	cin >> choose;
 
-	while (choose < 0 || choose > 7 || cin.fail())
+	while (choose < 0 || choose > 10|| cin.fail())
 	{
 		cin.clear();
 		cin.ignore(32767, '\n');
@@ -1652,6 +2000,9 @@ void scheduleMenu(Semester sem) {
 		cout << "\t5. Remove student in a course" << endl;
 		cout << "\t6. View list of student in a course" << endl;
 		cout << "\t7. View attendance list of a course" << endl;
+		cout << "\t8. View scoreboard list of a course" << endl;
+		cout << "\t9. Export attendance list of a course to csv file" << endl;
+		cout << "\t10. Export scoreboard list of a course to csv file" << endl;
 		cout << "\n\tEnter your choice: ";
 		cin >> choose;
 	}
@@ -1689,7 +2040,20 @@ void scheduleMenu(Semester sem) {
 		viewAtdListOfCour(sem);
 		scheduleMenu(sem);
 		break;
+	case 8:
+		viewScrListOfCour(sem);
+		scheduleMenu(sem);
+		break;
+	case 9:
+		ExportAttendanceListToCsv(sem);
+		scheduleMenu(sem);
+		break;
+	case 10:
+		ExportScoreboardListToCsv(sem);
+		scheduleMenu(sem);
+		break;
 	}
+
 }
 
 void courseMenu()
