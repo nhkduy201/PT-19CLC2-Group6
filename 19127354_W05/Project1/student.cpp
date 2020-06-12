@@ -370,17 +370,22 @@ void viewSchedule(Semester sem, string ID) {
 		getline(classFile, classes[i].classID);
 	}
 	ClearPrintDelay();
+	StudentInCourse tmpStudent;
 	Course tmpCourse;
 	string tmpDay;
 	int numberOfCourse = 0;
+	int numberOfStudent = 0;
 	bool isCourseExist;
+	for (int i = 0; i < numberOfClass; i++)
+	{
 		isCourseExist = false;
-		ifstream scheduleFileIn("../../" + sem.year + "-" + sem.name + "-" + ID + "-Schedule.txt");
+		ifstream scheduleFileIn("../../" + sem.year + "-" + sem.name + "-" + classes[i].classID + "-Schedule.txt");
 		if (scheduleFileIn.is_open()) {
 			scheduleFileIn >> numberOfCourse;
 			scheduleFileIn.ignore();
 			while (!scheduleFileIn.eof()) {
 				getline(scheduleFileIn, tmpCourse.courseID);
+				ifstream courseFileIn("../../" + sem.year + "-" + sem.name + "-" + classes[i].classID + "-" + tmpCourse.courseID + "-Student.txt");
 				getline(scheduleFileIn, tmpCourse.courseName);
 				getline(scheduleFileIn, tmpCourse.classID);
 				getline(scheduleFileIn, tmpCourse.lecturerUsername);
@@ -412,6 +417,7 @@ void viewSchedule(Semester sem, string ID) {
 				else if (tmpDay == "6") {
 					tmpCourse.day = 6;
 				}
+				getListOfWeek(tmpCourse.atd, tmpCourse.startDate, tmpCourse.endDate, tmpCourse.day);
 				scheduleFileIn >> tmpCourse.startHour >> tmpCourse.startMin;
 				scheduleFileIn.ignore();
 				scheduleFileIn >> tmpCourse.endHour >> tmpCourse.endMin;
@@ -420,54 +426,82 @@ void viewSchedule(Semester sem, string ID) {
 				scheduleFileIn >> tmpCourse.status;
 				scheduleFileIn.ignore();
 				if (tmpCourse.status) {
-					if (!isCourseExist) {
-						cout << "\n\t================ " << ID << " ================\n";
-						isCourseExist = true;
+					if (courseFileIn.is_open()) {
+						courseFileIn >> numberOfStudent;
+						courseFileIn.ignore();
+						while (!courseFileIn.eof()) {
+							getline(courseFileIn, tmpStudent.std.id);
+							getline(courseFileIn, tmpStudent.std.password);
+							getline(courseFileIn, tmpStudent.std.name);
+							getline(courseFileIn, tmpStudent.std.DoB);
+							getline(courseFileIn, tmpStudent.std.classID);
+							courseFileIn >> tmpStudent.std.status;
+							courseFileIn.ignore();
+							courseFileIn >> tmpStudent.scb.midterm;
+							courseFileIn.ignore();
+							courseFileIn >> tmpStudent.scb.final;
+							courseFileIn.ignore();
+							courseFileIn >> tmpStudent.scb.bonus;
+							courseFileIn.ignore();
+							courseFileIn >> tmpStudent.scb.total;
+							courseFileIn.ignore();
+							tmpStudent.listOfCheckIn = new bool[tmpCourse.atd.numberOfWeek];
+							for (int k = 0; k < tmpCourse.atd.numberOfWeek; k++) {
+								courseFileIn >> tmpStudent.listOfCheckIn[k];
+								courseFileIn.ignore();
+							}
+							courseFileIn >> tmpStudent.statusInCourse;
+							courseFileIn.ignore();
+							if (tmpStudent.std.id == ID && tmpStudent.std.status == 1 && tmpStudent.statusInCourse == 1) {
+								if (!isCourseExist) {
+									cout << "\n\t================ " << classes[i].classID << " ================\n";
+									isCourseExist = true;
+								}
+								cout << endl << "\tCourse ID: " << tmpCourse.courseID;
+								cout << endl << "\tCourse Name: " << tmpCourse.courseName;
+								cout << endl << "\tLeturer Username: " << tmpCourse.lecturerUsername;
+								cout << endl << "\tLeturer Name: " << tmpCourse.lecturerName;
+								cout << endl << "\tLeturer Degree: " << tmpCourse.degree;
+								cout << endl << "\tStart Date: " << tmpCourse.startDate.day << "/" << tmpCourse.startDate.month << "/" << tmpCourse.startDate.year;
+								cout << endl << "\tEnd Date: " << tmpCourse.endDate.day << "/" << tmpCourse.endDate.month << "/" << tmpCourse.endDate.year;
+								cout << endl << "\tDay of Week: ";
+								switch (tmpCourse.day)
+								{
+								case 0:
+									cout << "Monday";
+									break;
+								case 1:
+									cout << "Tuesday";
+									break;
+								case 2:
+									cout << "Wednesday";
+									break;
+								case 3:
+									cout << "Thursday";
+									break;
+								case 4:
+									cout << "Friday";
+									break;
+								case 5:
+									cout << "Saturday";
+									break;
+								case 6:
+									cout << "Sunday";
+									break;
+								}
+								cout << endl << "\tStart Hour, Minute: " << tmpCourse.startHour << ":" << tmpCourse.startMin;
+								cout << endl << "\tEnd Hour, Minute: " << tmpCourse.endHour << ":" << tmpCourse.endMin;
+								cout << endl << "\tRoom :" << tmpCourse.room << endl;
+								cout << "\n\t --------------------------------------\n";
+								break;
+							}
+						}
 					}
-					cout << endl << "\tCourse ID: " << tmpCourse.courseID;
-					cout << endl << "\tCourse Name: " << tmpCourse.courseName;
-					cout << endl << "\tLeturer Username: " << tmpCourse.lecturerUsername;
-					cout << endl << "\tLeturer Name: " << tmpCourse.lecturerName;
-					cout << endl << "\tLeturer Degree: " << tmpCourse.degree;
-					cout << endl << "\tStart Date: " << tmpCourse.startDate.day << "/" << tmpCourse.startDate.month << "/" << tmpCourse.startDate.year;
-					cout << endl << "\tEnd Date: " << tmpCourse.endDate.day << "/" << tmpCourse.endDate.month << "/" << tmpCourse.endDate.year;
-					cout << endl << "\tDay of Week: ";
-					switch (tmpCourse.day)
-					{
-					case 0:
-						cout << "Monday";
-						break;
-					case 1:
-						cout << "Tuesday";
-						break;
-					case 2:
-						cout << "Wednesday";
-						break;
-					case 3:
-						cout << "Thursday";
-						break;
-					case 4:
-						cout << "Friday";
-						break;
-					case 5:
-						cout << "Saturday";
-						break;
-					case 6:
-						cout << "Sunday";
-						break;
-					}
-					cout << endl << "\tStart Hour, Minute: " << tmpCourse.startHour << ":" << tmpCourse.startMin;
-					cout << endl << "\tEnd Hour, Minute: " << tmpCourse.endHour << ":" << tmpCourse.endMin;
-					cout << endl << "\tRoom :" << tmpCourse.room << endl;
-					cout << "\n\t --------------------------------------\n";
 				}
 			}
 			scheduleFileIn.close();
 		}
-		else
-		{
-			cout << "\tClass not found!\n";
-		}
+	}
 	delete[] classes;
 	system("pause");
 	// code here
